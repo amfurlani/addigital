@@ -10,7 +10,7 @@ export function Header(){
   return <header className="site-header"><div className="container nav-wrap">
     <Link href="/" className="brand brand-logo">
   <Image
-    src="/logo-addigital.png"
+    src="/logo-addigital.png?t=1"
     alt="AD - Advocacia Digital"
     width={220}
     height={100}
