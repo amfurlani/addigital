@@ -15,7 +15,7 @@ export function Footer() {
             <span>
               <strong>{site.shortName}</strong>
               <small>ADVOCACIA</small>
-            </span>
+            </span> 
           </div>
 
           <p>{site.tagline}</p>
