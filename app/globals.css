@@ -257,3 +257,33 @@ blockquote::before{
     box-shadow:0 20px 35px rgba(11,22,40,.07);
   }
 }
+
+
+/* ============================================================
+   LOGO — AD ADVOCACIA DIGITAL
+   ============================================================ */
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.header-logo {
+  width: 190px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .header-logo {
+    width: 155px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-logo {
+    width: 135px;
+  }
+}
