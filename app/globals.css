@@ -3,270 +3,115 @@
 @media(max-width:620px){.container{width:min(calc(100% - 28px),var(--max))}.site-header{height:70px}.main-nav{top:70px}.hero,.section,.page-hero,.article-hero{padding:58px 0}.cards,.article-grid,.team-grid,.pillar-grid,.tag-grid,.review-grid,.form-row,.check-list{grid-template-columns:1fr}.cta-inner,.footer-bottom{align-items:flex-start;flex-direction:column}.footer-grid{grid-template-columns:1fr}.hero-panel{display:none}.hero h1{font-size:44px}.article-body p{font-size:18px}}
 /* ============================================================
    AD — ADVOCACIA DIGITAL
-   Theme override v1
-   Cole este bloco NO FINAL de app/globals.css
+   DARK LEGAL-TECH THEME
    ============================================================ */
 
-:root{
-  /* Base institucional */
-  --ink:#0B1628;
-  --muted:#667085;
-  --paper:#F4F7FA;
-  --white:#FFFFFF;
-  --line:#DCE3EA;
+:root {
+  /* Base */
+  --ink: #F4F1EA;
+  --muted: #AEB6C2;
+  --paper: #10151D;
+  --white: #FFFFFF;
+  --line: #28313E;
+
+  /* Compatibilidade com CSS existente */
+  --green: #111C2E;
+  --gold: #C8A45D;
+  --max: 1180px;
 
   /* Identidade AD */
-  --green:#102A43; /* mantém compatibilidade com os nomes existentes no CSS */
-  --gold:#2F80ED;  /* acento digital - substitui o dourado */
-  --max:1180px;
+  --black: #080B10;
+  --graphite: #10151D;
+  --navy: #111C2E;
 
-  /* Novas variáveis para evolução futura */
-  --navy:#0B1628;
-  --navy-2:#102A43;
-  --blue:#2F80ED;
-  --cyan:#38BDF8;
-  --ice:#EEF5FB;
-  --silver:#B8C4CE;
-}
+  --gold-main: #C8A45D;
+  --gold-light: #E2C47D;
+  --gold-dark: #98783F;
 
-/* Base */
-body{
-  color:var(--ink);
-  background:#fff;
-}
+  --text: #F4F1EA;
+  --text-muted: #AEB6C2;
 
-/* Header */
-.site-header{
-  border-bottom:1px solid rgba(11,22,40,.08);
-  background:rgba(255,255,255,.94);
-  box-shadow:0 8px 28px rgba(11,22,40,.03);
-}
-
-/* Marca */
-.brand-mark{
-  border-color:rgba(47,128,237,.55);
-  color:var(--navy-2);
-  background:linear-gradient(145deg,#fff,#F1F6FB);
-}
-
-.brand strong{
-  color:var(--navy);
-}
-
-.brand small{
-  color:#738093;
-}
-
-/* Navegação */
-.main-nav>a:not(.nav-cta):hover{
-  color:var(--blue);
-}
-
-.nav-cta,
-.button{
-  border-color:var(--navy-2);
-}
-
-.nav-cta,
-.button.primary{
-  background:var(--navy-2);
-  color:#fff;
-}
-
-.nav-cta:hover,
-.button.primary:hover{
-  background:#163A5C;
-}
-
-.button.ghost:hover{
-  border-color:var(--blue);
-  color:var(--blue);
-}
-
-/* Hero */
-.hero{
-  background:
-    radial-gradient(circle at 88% 18%, rgba(56,189,248,.10), transparent 26%),
-    radial-gradient(circle at 74% 70%, rgba(47,128,237,.08), transparent 30%),
-    linear-gradient(135deg,#F4F7FA 0%,#FFFFFF 57%,#EEF5FB 100%);
-}
-
-.eyebrow{
-  color:var(--blue);
-}
-
-.hero h1 em{
-  color:var(--blue);
-}
-
-.hero-panel{
-  border-color:#DCE5EE;
-  box-shadow:0 24px 80px rgba(11,22,40,.10);
-}
-
-.hero-panel svg{
-  color:var(--blue);
-}
-
-/* Superfícies */
-.surface{
-  background:var(--paper);
-}
-
-.dark{
-  background:
-    radial-gradient(circle at 90% 10%, rgba(56,189,248,.09), transparent 28%),
-    linear-gradient(135deg,#0B1628,#102A43);
-  color:#fff;
-}
-
-.dark p,
-.dark .prose p{
-  color:#D2DCE7;
-}
-
-/* Links e acentos */
-.text-link:hover{
-  color:var(--blue);
-}
-
-.card .number,
-.person-card>span:first-of-type,
-.article-card>span:first-child,
-.pillar>span,
-.stars{
-  color:var(--blue);
-}
-
-/* Cards */
-.card,
-.article-card,
-.person-card.large,
-blockquote{
-  border-color:#DCE3EA;
-}
-
-.card:hover,
-.article-card:hover{
-  box-shadow:0 16px 42px rgba(11,22,40,.09);
-  border-color:#C7D7E6;
-}
-
-/* Equipe */
-.avatar{
-  background:
-    linear-gradient(145deg,#102A43,#174B73);
-  color:#fff;
-  box-shadow:0 12px 30px rgba(16,42,67,.14);
-}
-
-/* Citações / avaliações */
-blockquote{
-  position:relative;
-  overflow:hidden;
-}
-
-blockquote::before{
-  content:"";
-  position:absolute;
-  left:0;
-  top:0;
-  bottom:0;
-  width:3px;
-  background:linear-gradient(var(--blue),var(--cyan));
-}
-
-/* CTA */
-.cta-band{
-  background:
-    radial-gradient(circle at 85% 35%, rgba(56,189,248,.14), transparent 27%),
-    linear-gradient(120deg,#0B1628,#102A43);
-}
-
-/* Heros internos */
-.page-hero,
-.article-hero{
-  background:
-    radial-gradient(circle at 84% 18%, rgba(47,128,237,.07), transparent 26%),
-    var(--paper);
-}
-
-/* Elementos lineares */
-.pillar,
-.sector{
-  border-top-color:var(--blue);
-}
-
-.check-list svg{
-  color:var(--blue);
-}
-
-/* Artigos */
-.article-body p,
-.article-body li{
-  color:#34465A;
-}
-
-/* Form */
-.contact-form input:focus,
-.contact-form textarea:focus{
-  border-color:var(--blue);
-  box-shadow:0 0 0 3px rgba(47,128,237,.08);
-}
-
-/* Estados */
-.form-status.success{
-  background:#EFF8F3;
-}
-
-.form-status.error{
-  background:#FFF3F3;
-}
-
-/* Footer */
-.footer{
-  background:
-    radial-gradient(circle at 86% 12%, rgba(56,189,248,.08), transparent 25%),
-    #08111F;
-  color:#EEF4FA;
-}
-
-.footer a,
-.footer span,
-.footer p{
-  color:#B8C4CE;
-}
-
-.footer a:hover{
-  color:#fff;
-}
-
-.footer-brand span,
-.footer-brand strong{
-  color:#fff;
-}
-
-.footer-bottom{
-  border-top-color:#25364A;
-}
-
-/* Menu mobile */
-@media(max-width:900px){
-  .main-nav{
-    background:rgba(255,255,255,.98);
-    box-shadow:0 20px 35px rgba(11,22,40,.07);
-  }
+  --digital-blue: #2764A8;
 }
 
 
 /* ============================================================
-   LOGO — AD ADVOCACIA DIGITAL
+   BASE
+   ============================================================ */
+
+html {
+  background: var(--black);
+}
+
+body {
+  color: var(--text);
+  background: var(--black);
+}
+
+::selection {
+  background: var(--gold-main);
+  color: var(--black);
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.site-header {
+  background: rgba(8, 11, 16, 0.94);
+  border-bottom: 1px solid rgba(200, 164, 93, 0.16);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(14px);
+}
+
+.brand strong {
+  color: var(--text);
+}
+
+.brand small {
+  color: var(--text-muted);
+}
+
+.brand-mark {
+  background: transparent;
+  color: var(--gold-main);
+  border-color: rgba(200, 164, 93, 0.45);
+}
+
+
+/* Navegação */
+
+.main-nav > a:not(.nav-cta) {
+  color: #D8DDE5;
+}
+
+.main-nav > a:not(.nav-cta):hover {
+  color: var(--gold-light);
+}
+
+
+/* CTA do menu */
+
+.nav-cta {
+  color: var(--black) !important;
+  background: var(--gold-main);
+  border-color: var(--gold-main);
+}
+
+.nav-cta:hover {
+  background: var(--gold-light);
+  border-color: var(--gold-light);
+}
+
+
+/* ============================================================
+   LOGO
    ============================================================ */
 
 .brand-logo {
   display: flex;
   align-items: center;
-  text-decoration: none;
 }
 
 .header-logo {
@@ -276,14 +121,589 @@ blockquote::before{
   display: block;
 }
 
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 82% 25%,
+      rgba(39, 100, 168, 0.15),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 68% 75%,
+      rgba(200, 164, 93, 0.07),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #080B10 0%,
+      #0D131C 55%,
+      #111C2E 100%
+    );
+}
+
+
+/* detalhe tecnológico sutil */
+
+.hero::after {
+  content: "";
+  position: absolute;
+
+  width: 480px;
+  height: 480px;
+
+  right: -170px;
+  top: -170px;
+
+  border: 1px solid rgba(200, 164, 93, 0.08);
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+.hero h1 {
+  color: var(--text);
+}
+
+.hero h1 em {
+  color: var(--gold-light);
+}
+
+.hero p {
+  color: #B8C0CB;
+}
+
+.eyebrow {
+  color: var(--gold-main);
+}
+
+
+/* ============================================================
+   HERO PANEL
+   ============================================================ */
+
+.hero-panel {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 28, 46, 0.95),
+      rgba(12, 17, 24, 0.95)
+    );
+
+  border: 1px solid rgba(200, 164, 93, 0.20);
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.38);
+
+  color: var(--text);
+}
+
+.hero-panel svg {
+  color: var(--gold-main);
+}
+
+.hero-panel p {
+  color: var(--text-muted);
+}
+
+
+/* ============================================================
+   BOTÕES
+   ============================================================ */
+
+.button {
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.button.primary {
+  background: var(--gold-main);
+  border-color: var(--gold-main);
+  color: var(--black);
+}
+
+.button.primary:hover {
+  background: var(--gold-light);
+  border-color: var(--gold-light);
+  transform: translateY(-1px);
+}
+
+.button.ghost {
+  background: transparent;
+  border-color: rgba(200, 164, 93, 0.50);
+  color: var(--gold-light);
+}
+
+.button.ghost:hover {
+  background: rgba(200, 164, 93, 0.07);
+  border-color: var(--gold-light);
+}
+
+
+/* ============================================================
+   SEÇÕES
+   ============================================================ */
+
+.surface {
+  background: var(--graphite);
+}
+
+.section-title h2 {
+  color: var(--text);
+}
+
+.section-title p {
+  color: var(--text-muted);
+}
+
+
+/* ============================================================
+   SEÇÃO ESCURA
+   ============================================================ */
+
+.dark {
+  color: var(--text);
+
+  background:
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(39, 100, 168, 0.10),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #080B10,
+      #111C2E
+    );
+}
+
+.dark p,
+.dark .prose p {
+  color: #B9C1CC;
+}
+
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+
+.card,
+.article-card,
+.person-card.large,
+blockquote {
+
+  background:
+    linear-gradient(
+      145deg,
+      #121821,
+      #0D1219
+    );
+
+  border: 1px solid rgba(200, 164, 93, 0.13);
+
+  color: var(--text);
+
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.card:hover,
+.article-card:hover {
+
+  border-color: rgba(200, 164, 93, 0.48);
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.28);
+}
+
+
+.card p,
+.article-card p,
+.person-card p {
+  color: var(--text-muted);
+}
+
+
+/* números e detalhes */
+
+.card .number,
+.person-card > span:first-of-type,
+.article-card > span:first-child,
+.pillar > span {
+  color: var(--gold-main);
+}
+
+
+/* ============================================================
+   LINKS
+   ============================================================ */
+
+.text-link {
+  color: var(--gold-main);
+}
+
+.text-link:hover {
+  color: var(--gold-light);
+}
+
+
+/* ============================================================
+   ÁREAS / PILARES
+   ============================================================ */
+
+.pillar,
+.sector {
+  border-top-color: var(--gold-main);
+}
+
+.pillar h3,
+.sector h3 {
+  color: var(--text);
+}
+
+.pillar p,
+.sector p {
+  color: var(--text-muted);
+}
+
+
+/* ============================================================
+   EQUIPE
+   ============================================================ */
+
+.avatar {
+
+  background:
+    linear-gradient(
+      145deg,
+      #1B2638,
+      #111820
+    );
+
+  color: var(--gold-light);
+
+  border: 1px solid rgba(200, 164, 93, 0.25);
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.22);
+}
+
+
+/* ============================================================
+   AVALIAÇÕES
+   ============================================================ */
+
+.stars {
+  color: var(--gold-light);
+}
+
+blockquote {
+  position: relative;
+  overflow: hidden;
+}
+
+blockquote::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 3px;
+
+  background:
+    linear-gradient(
+      var(--gold-light),
+      var(--gold-dark)
+    );
+}
+
+blockquote p {
+  color: #D2D7DE;
+}
+
+
+/* ============================================================
+   CHECK LIST
+   ============================================================ */
+
+.check-list svg {
+  color: var(--gold-main);
+}
+
+
+/* ============================================================
+   CTA BAND
+   ============================================================ */
+
+.cta-band {
+
+  background:
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(39, 100, 168, 0.14),
+      transparent 30%
+    ),
+    linear-gradient(
+      120deg,
+      #080B10,
+      #111C2E
+    );
+
+  border-top:
+    1px solid rgba(200, 164, 93, 0.10);
+
+  border-bottom:
+    1px solid rgba(200, 164, 93, 0.10);
+}
+
+.cta-band h2 {
+  color: var(--text);
+}
+
+.cta-band p {
+  color: var(--text-muted);
+}
+
+
+/* ============================================================
+   HERO DAS PÁGINAS INTERNAS
+   ============================================================ */
+
+.page-hero,
+.article-hero {
+
+  background:
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(39, 100, 168, 0.10),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #0A0E14,
+      #111923
+    );
+
+  border-bottom:
+    1px solid rgba(200, 164, 93, 0.10);
+}
+
+.page-hero h1,
+.article-hero h1 {
+  color: var(--text);
+}
+
+.page-hero p,
+.article-hero p {
+  color: var(--text-muted);
+}
+
+
+/* ============================================================
+   ARTIGOS
+   ============================================================ */
+
+.article-body {
+  color: var(--text);
+}
+
+.article-body h2,
+.article-body h3 {
+  color: var(--text);
+}
+
+.article-body p,
+.article-body li {
+  color: #B7C0CB;
+}
+
+
+/* ============================================================
+   FORMULÁRIO
+   ============================================================ */
+
+.contact-form label {
+  color: var(--text);
+}
+
+.contact-form input,
+.contact-form textarea {
+
+  background: #0D1219;
+
+  color: var(--text);
+
+  border:
+    1px solid #2B3441;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #707B89;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+
+  outline: none;
+
+  border-color: var(--gold-main);
+
+  box-shadow:
+    0 0 0 3px rgba(200, 164, 93, 0.08);
+}
+
+
+/* ============================================================
+   STATUS DO FORMULÁRIO
+   ============================================================ */
+
+.form-status.success {
+  color: #CDE5D3;
+  background: #132219;
+}
+
+.form-status.error {
+  color: #F1C5C5;
+  background: #281516;
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.footer {
+
+  color: #E9E5DC;
+
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(39, 100, 168, 0.08),
+      transparent 25%
+    ),
+    #06080C;
+
+  border-top:
+    1px solid rgba(200, 164, 93, 0.15);
+}
+
+
+.footer strong {
+  color: var(--gold-light);
+}
+
+.footer a,
+.footer span,
+.footer p {
+  color: #9FA8B4;
+}
+
+.footer a:hover {
+  color: var(--gold-light);
+}
+
+
+.footer-bottom {
+  border-top-color: #252C35;
+}
+
+
+/* logo footer */
+
+.footer-logo {
+
+  display: block;
+
+  width: 240px;
+  max-width: 100%;
+
+  height: auto;
+
+  object-fit: contain;
+
+  margin-bottom: 24px;
+}
+
+
+/* ============================================================
+   SCROLLBAR — detalhe opcional
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080B10;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #343A43;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-dark);
+}
+
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+
 @media (max-width: 900px) {
+
+  .main-nav {
+
+    background: rgba(8, 11, 16, 0.98);
+
+    border-top:
+      1px solid rgba(200, 164, 93, 0.12);
+
+    box-shadow:
+      0 20px 35px rgba(0, 0, 0, 0.30);
+  }
+
+  .main-nav > a:not(.nav-cta) {
+    color: #E1E5EA;
+  }
+
   .header-logo {
     width: 155px;
   }
+
+  .footer-logo {
+    width: 210px;
+  }
 }
 
+
 @media (max-width: 480px) {
+
   .header-logo {
     width: 135px;
   }
+
 }
