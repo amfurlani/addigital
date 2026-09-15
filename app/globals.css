@@ -707,3 +707,101 @@ blockquote p {
   }
 
 }
+
+/* ============================================================
+   AD DARK THEME — AJUSTES FINAIS
+   ============================================================ */
+
+/* Evita áreas claras remanescentes */
+.section {
+  color: var(--text);
+}
+
+.prose p,
+.lead {
+  color: var(--text-muted);
+}
+
+/* Tags e filtros */
+.tag-list span,
+.filter-row span {
+  background: #0D1219;
+  color: var(--text-muted);
+  border-color: var(--line);
+}
+
+/* Perfil */
+.profile-aside {
+  border-color: var(--line);
+}
+
+.profile-aside p {
+  color: var(--text-muted);
+}
+
+/* Publicações */
+.publication {
+  color: var(--text);
+  border-color: var(--line);
+}
+
+/* Informações de contato */
+.contact-info {
+  color: var(--text);
+}
+
+.contact-info a {
+  color: var(--gold-light);
+}
+
+/* Checkbox */
+.checkbox {
+  color: var(--text-muted);
+}
+
+/* Metadados */
+.article-meta {
+  color: var(--text-muted);
+}
+
+/* Cards de pessoa que não usam .large */
+.person-card {
+  border-color: rgba(200, 164, 93, 0.16);
+}
+
+/* Separadores */
+.check-list div {
+  border-color: var(--line);
+}
+
+/* Botão claro dentro de áreas escuras */
+.button.light {
+  background: var(--gold-main);
+  color: var(--black);
+  border-color: var(--gold-main);
+}
+
+.button.light:hover {
+  background: var(--gold-light);
+  border-color: var(--gold-light);
+}
+
+/* Links claros */
+.light-link {
+  color: var(--gold-light);
+}
+
+/* Textos pequenos */
+.person-card small,
+.article-card small,
+.contact-form small {
+  color: var(--text-muted);
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .main-nav {
+    background: rgba(8, 11, 16, 0.98);
+    border-bottom-color: rgba(200, 164, 93, 0.15);
+  }
+}
