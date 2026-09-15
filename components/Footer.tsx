@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="footer-brand">
           <Link href="/" aria-label="AD - Advocacia Digital">
             <Image
-              src="/logo-addigital.png?t=1"
+              src="/logo-addigital.png"
               alt="AD - Advocacia Digital"
               width={300}
               height={150}
