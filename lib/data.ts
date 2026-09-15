@@ -75,7 +75,7 @@ export const articles: Article[] = [
     '    Quantidade e intensidade dos golpes, regiões atingidas, vulnerabilidade da vítima, contexto de violência doméstica, ameaças anteriores e comportamento do agressor são elementos que podem contribuir para essa avaliação.',
     '    O Direito precisa analisar aquilo que o agente efetivamente buscou realizar, e não apenas o resultado que circunstâncias externas permitiram que acontecesse. Em crimes dessa natureza, compreender a intenção pode ser essencial para que a resposta jurídica corresponda à gravidade real da conduta.',
     '- o -',
-    'Publicado originalmente na Revista Jus Navigandi, ano 30, n. 8077, em 12 de agosto de 2025.'
+    'PINHEIROS, Daniela. Feminicídio: o que a lei precisa ver.: Um crime de intenção, não de sorte. Revista Jus Navigandi, ISSN 1518-4862, Teresina, ano 30, n. 8077, 12 ago. 2025. Disponível em: https://jus.com.br/artigos/115180.'
   ]
 },
   {
