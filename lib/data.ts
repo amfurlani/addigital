@@ -12,9 +12,9 @@ export const areas: Area[] = [
 ];
 
 export const lawyers: Lawyer[] = [
-  { slug:'adilson-furlani', name:'FURLANI, Adilson', role:'Sócio-Advogado', oab:'OAB/SP 53.8189', areas:['Direito Civil','Digital', 'Consumidor'], education:['Advogado, Bacharel em Direito — Universidade Paulista','Especialista em Sistemas de Informação, Segurança da Informação e Análises de Sistemas Informáticos'], bio:'Atua em questões consultivas e contenciosas relacionadas ao ambiente empresarial, com experiência na análise de temas tributários e estratégicos.', publications:['Reforma Tributária: principais pontos para empresas','Planejamento e segurança jurídica nas decisões empresariais'] },
+  { slug:'adilson-furlani', name:'FURLANI, Adilson', role:'Sócio-Advogado', oab:'OAB/SP 53.8189', areas:['Direito Civil','Digital', 'Consumidor'], education:['Advogado, Bacharel em Direito — Universidade Paulista','Especialista em Sistemas de Informação, Segurança da Informação e Análises de Sistemas Informáticos'], bio:'Advogado com expertise única na intersecção entre Direito e Tecnologia. Minha formação multidisciplinar em Direito, Sistemas, Segurança da Informação e Geoprocessamento permite oferecer soluções jurídicas inovadoras e precisas. Atuo com Direito Civil, Digital e LGPD, compreendendo a tecnologia por trás da lei, e com Direito Imobiliário e Ambiental, utilizando análises de dados geoespaciais. Meu compromisso é traduzir a complexidade técnica e jurídica em estratégias claras e seguras para os meus clientes.', publications:['Reforma Tributária: principais pontos para empresas','Planejamento e segurança jurídica nas decisões empresariais'] },
   { slug:'daniela-pinheiros', name:'PINHEIROS, Daniela', role:'Consultora Jurídica', oab:'', areas:['Direito Empresarial','Contratos'], education:['Bacharel em Direito — Universidade Paulista','Pós-graduação em Direito Civil, Processo Civil e Previdenciário'], bio:'Atua na estruturação de relações empresariais, negociação e revisão de contratos e apoio jurídico a decisões de negócio.', publications:['Cláusulas contratuais que merecem atenção','Governança e prevenção de conflitos societários'] },
-  { slug:'pedro-almeida', name:'ALMEIDA, Pedro', role:'Analista Jurídico', oab:'', areas:['Contencioso','Consultoria Jurídica'], education:['Bacharel em Direito — Universidade X'], bio:'Atua na condução de demandas judiciais e administrativas, com foco em análise processual, organização de evidências e acompanhamento estratégico.', publications:['Decisões empresariais e análise jurídica preventiva'] },
+  { slug:'pedro-almeida', name:'ALMEIDA, Pedro', role:'Analista Jurídico', oab:'', areas:['Contencioso','Consultoria Jurídica'], education:['Bacharel em Direito'], bio:'Atua na condução de demandas judiciais e administrativas, com foco em análise processual, organização de evidências e acompanhamento estratégico.', publications:['Decisões empresariais e análise jurídica preventiva'] },
 ];
 
 export const articles: Article[] = [
@@ -33,73 +33,56 @@ export const articles: Article[] = [
     'Introdução',
     '    A inadimplência em contratos de locação pode gerar dificuldades relevantes para o proprietário do imóvel, especialmente quando os aluguéis e outros encargos permanecem em atraso e o locatário continua ocupando o bem. Nessas situações, é importante compreender quais medidas podem ser adotadas para cobrança dos valores e eventual retomada do imóvel.',
     '    O problema envolve não apenas o pagamento do aluguel, mas também obrigações previstas no contrato, como encargos da locação, conservação do imóvel e, conforme o caso, regularização de contas vinculadas à utilização da propriedade.',
-
     '1. Do Imóvel',
     '    Antes da locação, o imóvel deve apresentar condições adequadas de utilização e habitabilidade. Aspectos relacionados à segurança, instalações elétricas e hidráulicas, higiene, conservação e acessibilidade devem ser considerados pelas partes.',
     '    A vistoria inicial é particularmente relevante, pois documenta as condições em que o imóvel foi entregue e pode servir posteriormente como elemento de comparação no momento da devolução.',
-
     '2. Do locador',
     '    O locador possui obrigações relacionadas à disponibilização do imóvel em condições adequadas de uso e ao cumprimento das disposições legais e contratuais aplicáveis à relação locatícia.',
     '    Também é importante que a documentação relacionada ao imóvel e à própria contratação seja analisada adequadamente, bem como que sejam avaliadas as condições da pessoa que ocupará o bem.',
-
     '3. Do locatário',
     '    O locatário assume obrigações decorrentes do contrato, entre elas o pagamento pontual do aluguel e dos encargos que lhe sejam atribuídos, além da utilização e conservação do imóvel de acordo com o que foi convencionado.',
     '    Antes da contratação, é comum que sejam avaliadas capacidade financeira e garantias destinadas a reduzir os riscos decorrentes de eventual inadimplemento.',
-
     '4. Do contrato',
     '    O contrato de locação formaliza direitos e obrigações de locador e locatário e deve identificar adequadamente as partes, o imóvel, o valor do aluguel, os encargos, o prazo da locação e as demais condições estabelecidas entre os contratantes.',
     '    Nas locações urbanas, deve-se observar especialmente a Lei nº 8.245/1991, conhecida como Lei do Inquilinato.',
-
     '5. Da garantia',
     '    As garantias locatícias constituem importante mecanismo de proteção diante do risco de inadimplemento. A legislação prevê modalidades específicas, cuja utilização e efeitos devem ser avaliados conforme o contrato celebrado.',
     '    As condições da garantia devem ser claramente estabelecidas, inclusive quanto à sua vigência e às hipóteses em que poderá ser utilizada.',
-
     '6. Da inadimplência - riscos e prejuízos do locador',
     '    A falta de pagamento pode interromper uma fonte de receita do proprietário e ainda produzir despesas adicionais relacionadas à cobrança, manutenção do imóvel e eventual processo judicial.',
     '    O prolongamento da ocupação por locatário inadimplente também pode retardar uma nova locação e aumentar os prejuízos decorrentes da indisponibilidade do bem.',
-
     '7. Da inadimplência - riscos e prejuízos do locatário',
     '    Para o locatário, o inadimplemento pode resultar em cobrança do débito, incidência dos encargos contratualmente previstos e, presentes os requisitos legais, ação destinada à retomada do imóvel.',
     '    A negociação entre as partes pode ser considerada diante de dificuldades financeiras, sem prejuízo dos direitos e obrigações estabelecidos no contrato e na legislação.',
-
     '8. Quem sofre maior prejuízo imediato?',
     '    A inadimplência produz consequências para ambas as partes. Para o locador, entretanto, a interrupção do recebimento dos aluguéis pode produzir impacto financeiro imediato enquanto o imóvel continua indisponível para uma nova locação.',
     '    Para o locatário, podem surgir consequências patrimoniais, contratuais e processuais relacionadas à dívida e à permanência no imóvel.',
-
     '9. Como o locador pode mitigar seus prejuízos?',
     '    Entre as alternativas que podem ser avaliadas estão a negociação e cobrança extrajudicial, a utilização das garantias existentes e, quando necessária, a adoção das medidas judiciais previstas na legislação.',
     '    A medida adequada dependerá das circunstâncias concretas, da modalidade de garantia existente e das disposições do contrato.',
-
     '10. Ação de despejo: uma solução, ou um problema para o locador?',
     '    A ação de despejo constitui instrumento jurídico destinado à retomada do imóvel nas hipóteses previstas em lei. Apesar de possibilitar a recuperação da posse, o processo também pode envolver custos, prazos e discussão judicial.',
     '    Por isso, a escolha da estratégia deve considerar tanto o objetivo de recuperar o imóvel quanto os aspectos econômicos e processuais envolvidos.',
-
     '11. Ação de despejo: etapas legais',
     '    Conforme as circunstâncias, podem existir medidas extrajudiciais anteriores ou paralelas ao processo, incluindo comunicação formal ao locatário e tentativa de regularização da situação.',
     '    Persistindo o inadimplemento, a legislação prevê a possibilidade de ação de despejo por falta de pagamento, podendo haver também discussão sobre aluguéis e encargos devidos.',
     '    O procedimento judicial envolve a citação da parte contrária, oportunidade de defesa, apreciação judicial dos pedidos e posterior cumprimento da decisão.',
-
     '12. Uma "possível" solução "rápida": Liminar de Despejo',
     '    Em determinadas hipóteses previstas na Lei do Inquilinato, pode ser requerida medida liminar para desocupação do imóvel antes do julgamento definitivo da ação.',
     '    A concessão não é automática. Depende da hipótese legal invocada, dos elementos apresentados no processo e do preenchimento dos requisitos previstos em lei, cabendo ao juiz apreciar o pedido.',
-
     '13. Requisitos "mínimos" para a Liminar de Despejo',
     '    Os requisitos para uma medida liminar dependem do fundamento utilizado e das características da relação locatícia, inclusive da existência ou não das garantias previstas na legislação.',
     '    O artigo 59 da Lei nº 8.245/1991 disciplina hipóteses em que pode haver desocupação liminar, observados os requisitos legais correspondentes.',
-
     '14. E se o locatário se recusar a deixar o imóvel?',
     '    Uma ordem judicial de desocupação deve ser cumprida pelos meios processuais adequados. Havendo resistência, cabe ao Poder Judiciário determinar as providências necessárias para efetivação da decisão.',
     '    O proprietário não deve promover a retirada do ocupante por iniciativa própria à margem do procedimento legal.',
-
     '15. Ocorreu o despejo. O que o locador deve fazer?',
     '    Após a retomada do imóvel, é recomendável verificar seu estado de conservação e comparar as condições encontradas com aquelas documentadas anteriormente, especialmente por meio das vistorias realizadas.',
     '    Eventuais valores pendentes, danos ou encargos devem ser avaliados conforme o contrato, as garantias existentes e os instrumentos de cobrança juridicamente disponíveis.',
-
     'Conclusão',
     '    A inadimplência locatícia exige análise cuidadosa do contrato, das garantias e das circunstâncias concretas. A negociação pode solucionar determinadas situações, enquanto outras podem exigir medidas judiciais para cobrança dos débitos e retomada do imóvel.',
     '    A Lei do Inquilinato estabelece instrumentos específicos para a ação de despejo e, em determinadas hipóteses, admite pedido de desocupação liminar. A aplicação desses mecanismos depende do preenchimento dos requisitos legais de cada caso.',
     '    Por essa razão, medidas destinadas à retomada do imóvel devem observar o procedimento legal e as particularidades da relação contratual.',
-
     'Referências Bibliográficas',
     '    BRASIL. Lei nº 8.245, de 18 de outubro de 1991. Dispõe sobre as locações dos imóveis urbanos e os procedimentos a elas pertinentes.',
     '    BRASIL. Lei nº 10.406, de 10 de janeiro de 2002. Institui o Código Civil.',
@@ -109,7 +92,7 @@ export const articles: Article[] = [
     '    GONÇALVES, Carlos Roberto. Direito civil brasileiro. São Paulo: Saraiva Educação, 2021. Vol. III.',
     '    NOGUEIRA, Guilherme Magalhães. Curso de Direito Imobiliário. 11. ed. São Paulo: Saraiva Educação, 2020.',
     '- o -',
-    'FURLANI, Adilson. Inadimplência no contrato de aluguel - Como reaver o imóvel de forma rápida. Revista Jus Navigandi, ISSN 1518-4862, Teresina, ano 28, n. 7235, 23 abr. 2023. Disponível em: <a href="https://jus.com.br/artigos/103542">https://jus.com.br/artigos/103542</a>.'
+    'FURLANI, Adilson. Inadimplência no contrato de aluguel - Como reaver o imóvel de forma rápida. Revista Jus Navigandi, ISSN 1518-4862, Teresina, ano 28, n. 7235, 23 abr. 2023. Disponível em: https://jus.com.br/artigos/103542.'
   ]
 },
   {
