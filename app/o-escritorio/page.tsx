@@ -7,7 +7,7 @@ export default function Page(){return <><PageHero eyebrow="O ESCRITÓRIO" title=
       <div><h2>Nossa história</h2></div>
       <div className="prose">
         <p>
-          Fundado em 2025, o Escritório Jovem, com foco na eficencia juridica digital, nasceu em 2025 com o propósito de oferecer uma advocacia pratica, 
+          Escritório Jovem, com foco na eficencia juridica digital, nasceu em 2025 com o propósito de oferecer uma advocacia pratica, 
           próxima, tecnicamente rigorosa e digitalmente conectada às necessidades de seus clientes.</p><p>Ao longo de sua trajetória, desenvolveu atuação 
           em diferentes áreas do direito empresarial, acompanhando mudanças regulatórias, econômicas e organizacionais.
         </p>
