@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
 
-export default function Footer() {
+export function Footer() {
   return (
     <footer className="footer">
       <div className="container footer-grid">
