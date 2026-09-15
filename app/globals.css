@@ -925,3 +925,57 @@ blockquote p {
     padding: 20px;
   }
 }
+
+/* ============================================================
+   FOTOS DA EQUIPE
+   ============================================================ */
+
+/* Foto nos cards da Home / Equipe */
+.team-photo {
+  width: 120px;
+  height: 120px;
+  display: block;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 50%;
+  border: 2px solid rgba(200, 164, 93, 0.55);
+  padding: 3px;
+  background: var(--black);
+  margin-bottom: 20px;
+}
+
+/* Página individual do advogado */
+.profile-photo {
+  width: 240px;
+  height: 300px;
+  display: block;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 6px;
+  border: 1px solid rgba(200, 164, 93, 0.35);
+  background: var(--black);
+}
+
+/* Espaçamento das informações do card */
+.person-card .text-link {
+  display: inline-flex;
+  margin-top: 18px;
+}
+
+.person-card small {
+  display: block;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .team-photo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-photo {
+    width: 200px;
+    height: 250px;
+  }
+}
