@@ -979,3 +979,40 @@ blockquote p {
     height: 250px;
   }
 }
+
+/* ============================================================
+   MENU MOBILE — TEMA ESCURO
+   ============================================================ */
+
+.menu-button {
+  color: var(--gold-light);
+  background: transparent;
+  border-color: rgba(200, 164, 93, 0.35);
+}
+
+.menu-button svg {
+  color: var(--gold-light);
+  stroke: var(--gold-light);
+}
+
+.menu-button:hover {
+  color: var(--gold-main);
+  border-color: var(--gold-main);
+  background: rgba(200, 164, 93, 0.08);
+}
+
+.menu-button:focus-visible {
+  outline: 2px solid var(--gold-main);
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .menu-button {
+    color: var(--gold-light);
+  }
+
+  .menu-button svg {
+    color: var(--gold-light);
+    stroke: var(--gold-light);
+  }
+}
