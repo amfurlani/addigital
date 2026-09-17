@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(base),
   title: { default: site.name, template: `%s | ${site.shortName}` },
   description: site.description,
+  icons: {
+    icon: '/logoCurto-addigital.png',
+    shortcut: '/logoCurto-addigital.png',
+    apple: '/logoCurto-addigital.png',
+  },
   openGraph: { title: site.name, description: site.description, type:'website', locale:'pt_BR', url:base, siteName:site.name },
   robots: { index:true, follow:true },
 };
