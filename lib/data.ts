@@ -148,7 +148,7 @@ export const articles: Article[] = [
         '    Sindicato dos Bancários e Financiários de São Paulo, Osasco e Região — manifestação pública sobre os desligamentos realizados pelo Itaú em setembro de 2025.',
         '    Outras fontes jornalísticas, acadêmicas e jurídicas constam da publicação original na Revista Jus Navigandi.',
         '- o -',
-        'FURLANI, Adilson. Produtividade vs. Privacidade - A Guerra Silenciosa do Home Office. Revista Jus Navigandi, 10 set. 2025. Disponível em: https://jus.com.br/artigos/115558/produtividade-vs-privacidade-a-guerra-silenciosa-do-home-office.'
+        'FURLANI, Adilson. Produtividade vs. Privacidade - A Guerra Silenciosa do Home Office. Revista Jus Navigandi, 10 set. 2025. Disponível em: https://jus.com.br/artigos/115558/.'
       ]
     },
   {
