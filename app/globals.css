@@ -1084,3 +1084,20 @@ blockquote p {
     height: 399px;
   }
 }
+
+
+/* ============================================================
+   LARGURA DO CONTEÚDO DOS ARTIGOS
+   ============================================================ */
+
+.article-content-width {
+  max-width: 820px;
+}
+
+.article-podcast {
+  margin-bottom: 24px;
+}
+
+.article-podcast + * {
+  margin-top: 0;
+}
