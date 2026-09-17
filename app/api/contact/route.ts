@@ -253,7 +253,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       message:
-        'Mensagem enviada com sucesso. Retornaremos o contato quando possível.',
+        'Mensagem enviada com sucesso. AD-RESEND-V1',
     });
   } catch (error) {
     console.error('[CONTACT_FORM] Erro:', error);
