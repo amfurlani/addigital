@@ -1016,3 +1016,86 @@ blockquote p {
     stroke: var(--gold-light);
   }
 }
+
+    /* ============================================================
+       PODCAST — ARTIGOS
+       ============================================================ */
+
+    .podcast-box {
+      margin-top: 24px;
+      margin-bottom: 64px;
+      padding: 30px;
+      display: flex;
+      align-items: flex-start;
+      gap: 22px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(200, 164, 93, 0.08),
+          rgba(39, 100, 168, 0.06)
+        ),
+        var(--graphite);
+      border: 1px solid rgba(200, 164, 93, 0.28);
+      border-radius: 8px;
+    }
+
+    .podcast-icon {
+      width: 52px;
+      height: 52px;
+      flex: 0 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+      border: 1px solid rgba(200, 164, 93, 0.4);
+      border-radius: 50%;
+      background: rgba(200, 164, 93, 0.06);
+    }
+
+    .podcast-content {
+      flex: 1;
+    }
+
+    .podcast-content .eyebrow {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .podcast-content h2 {
+      margin: 0 0 10px;
+      color: var(--warm-white);
+      font-size: clamp(1.25rem, 2vw, 1.6rem);
+      line-height: 1.25;
+    }
+
+    .podcast-content p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .podcast-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .podcast-box {
+        padding: 22px;
+        gap: 16px;
+        flex-direction: column;
+        margin-bottom: 48px;
+      }
+
+      .podcast-icon {
+        width: 46px;
+        height: 46px;
+        flex-basis: 46px;
+      }
+
+      .podcast-button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
