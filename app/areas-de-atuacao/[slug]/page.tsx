@@ -32,23 +32,25 @@ export async function generateMetadata({
   const pageUrl = `${baseUrl}/areas-de-atuacao/${area.slug}`;
 
   return {
-    title: area.title,
-
-    description: area.summary,
-
+    title: area.seo?.title || area.title,
+  
+    description:
+      area.seo?.description || area.summary,
+  
     alternates: {
       canonical: pageUrl,
     },
-
+  
     openGraph: {
       type: 'website',
       locale: 'pt_BR',
       url: pageUrl,
       siteName: 'AD Advocacia Digital',
-      title: `${area.title} | AD Advocacia Digital`,
-      description: area.summary,
+      title: `${area.seo?.title || area.title} | AD Advocacia Digital`,
+      description:
+        area.seo?.description || area.summary,
     },
-
+  
     robots: {
       index: true,
       follow: true,
@@ -164,6 +166,43 @@ export default async function Page({
 
         </div>
       </section>
+
+      {area.content && (
+        <section className="section area-editorial">
+          <div className="container narrow">
+      
+            <span className="eyebrow">
+              ENTENDA A ATUAÇÃO
+            </span>
+      
+            <h2>{area.content.title}</h2>
+      
+            <div className="area-editorial-intro">
+              {area.content.paragraphs.map((paragraph, index) => (
+                <p key={index}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+      
+            {area.content.topics &&
+              area.content.topics.length > 0 && (
+                <div className="area-topics">
+                  {area.content.topics.map((topic) => (
+                    <div
+                      className="area-topic"
+                      key={topic.title}
+                    >
+                      <h3>{topic.title}</h3>
+                      <p>{topic.text}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+      
+          </div>
+        </section>
+      )}
 
       {related.length > 0 && (
         <section className="section">
