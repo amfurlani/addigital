@@ -8,20 +8,94 @@ import { ArticleNarrator } from '@/components/ArticleNarrator';
 const baseUrl = 'https://addigital.adv.br';
 
 /**
- * Converte datas usadas no data.ts:
- * "10/09/2025 às 17:55" -> "2025-09-10T17:55:00-03:00"
- * "10/09/2025"          -> "2025-09-10T12:00:00-03:00"
+ * Converte as datas editoriais usadas no data.ts para ISO 8601.
+ *
+ * Formatos aceitos:
+ * "10 set. 2025"             -> "2025-09-10T12:00:00-03:00"
+ * "10 set. 2025 às 17:55"    -> "2025-09-10T17:55:00-03:00"
+ * "10/09/2025"               -> "2025-09-10T12:00:00-03:00"
+ * "10/09/2025 às 17:55"      -> "2025-09-10T17:55:00-03:00"
+ *
+ * Mantemos suporte ao formato numérico para compatibilidade
+ * com conteúdos antigos.
  */
 function toIsoDate(date: string) {
-  const match = date.match(
-    /(\d{2})\/(\d{2})\/(\d{4})(?:\s+às\s+(\d{2}):(\d{2}))?/
+  const months: Record<string, string> = {
+    jan: '01',
+    fev: '02',
+    mar: '03',
+    abr: '04',
+    mai: '05',
+    jun: '06',
+    jul: '07',
+    ago: '08',
+    set: '09',
+    out: '10',
+    nov: '11',
+    dez: '12',
+  };
+
+  const normalizedDate = date
+    .trim()
+    .toLowerCase();
+
+  /*
+   * Formato editorial:
+   * 10 set. 2025
+   * 10 set. 2025 às 17:55
+   */
+  const editorialMatch = normalizedDate.match(
+    /^(\d{1,2})\s+([a-zç]{3})\.?\s+(\d{4})(?:\s+às\s+(\d{1,2}):(\d{2}))?$/
   );
 
-  if (!match) return undefined;
+  if (editorialMatch) {
+    const [
+      ,
+      day,
+      monthName,
+      year,
+      hour = '12',
+      minute = '00',
+    ] = editorialMatch;
 
-  const [, day, month, year, hour = '12', minute = '00'] = match;
+    const month = months[monthName];
 
-  return `${year}-${month}-${day}T${hour}:${minute}:00-03:00`;
+    if (!month) {
+      return undefined;
+    }
+
+    return `${year}-${month}-${day.padStart(2, '0')}T${hour.padStart(
+      2,
+      '0'
+    )}:${minute}:00-03:00`;
+  }
+
+  /*
+   * Formato numérico legado:
+   * 10/09/2025
+   * 10/09/2025 às 17:55
+   */
+  const numericMatch = normalizedDate.match(
+    /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+às\s+(\d{1,2}):(\d{2}))?$/
+  );
+
+  if (numericMatch) {
+    const [
+      ,
+      day,
+      month,
+      year,
+      hour = '12',
+      minute = '00',
+    ] = numericMatch;
+
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(
+      2,
+      '0'
+    )}T${hour.padStart(2, '0')}:${minute}:00-03:00`;
+  }
+
+  return undefined;
 }
 
 export function generateStaticParams() {
