@@ -1,6 +1,6 @@
 export type Area = { slug:string; title:string; summary:string; intro:string; services:string[]; approach:string };
 export type Lawyer = { slug:string; name:string; role:string; oab:string; areas:string[]; education:string[]; bio:string; publications:string[]; image?:string;};
-export type Article = { slug:string; category:string; title:string; excerpt:string; date:string; authorSlug:string; readTime:string; body:string[]; podcast?: {platform: string; url: string;}; };
+export type Article = { slug:string; category:string; title:string; excerpt:string; date:string; authorSlug:string; readTime:string; body:string[]; podcast?: { platform: string; url: string; embedUrl?: string; }; };
 
 export const areas: Area[] = [
   { slug:'direito-tributario', title:'Direito Tributário', summary:'Assessoria e atuação em questões tributárias administrativas e judiciais.', intro:'Atuação jurídica em questões tributárias que exigem análise técnica, visão estratégica e compreensão do ambiente empresarial.', services:['Planejamento tributário','Análise de questões fiscais','Consultoria tributária','Recuperação de créditos','Processos administrativos','Processos judiciais','Análise de riscos tributários','Acompanhamento de mudanças legislativas'], approach:'Cada questão tributária é analisada considerando o contexto jurídico, econômico e operacional envolvido, com identificação de riscos, alternativas e caminhos juridicamente adequados.' },
@@ -87,7 +87,8 @@ export const articles: Article[] = [
       readTime: '14 min',
       podcast: {
         platform: 'LinkedIn',
-        url: 'https://www.linkedin.com/feed/update/urn:li:activity:7374885820425666562'
+        url: 'https://www.linkedin.com/feed/update/urn:li:activity:7374885820425666562',
+        embedUrl: 'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7374885412881731584?compact=1'
       },
       body: [
         'Introdução: Itaú/2025 - O E-mail que Chocou o Home Office',
