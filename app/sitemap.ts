@@ -11,7 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/atuacao`,
+      url: `${baseUrl}/areas-de-atuacao`,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
