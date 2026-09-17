@@ -24,6 +24,46 @@ export const areas: Area[] = [
   { slug:'contencioso', title:'Contencioso', summary:'Atuação técnica na condução de demandas judiciais e administrativas.', intro:'Condução estratégica de conflitos com análise de risco, definição de teses e acompanhamento próximo da evolução de cada demanda.', services:['Contencioso cível','Contencioso empresarial','Processos administrativos','Estratégia processual','Negociação e acordos','Gestão de carteira'], approach:'Cada demanda é analisada de forma individualizada, considerando fundamentos jurídicos, evidências, riscos e possíveis desdobramentos.' },
   { slug:'consultoria-juridica', title:'Consultoria Jurídica', summary:'Análise preventiva de questões jurídicas e identificação de alternativas.', intro:'Apoio jurídico contínuo para decisões que demandam prevenção, estruturação e avaliação de riscos.', services:['Pareceres','Consultas jurídicas','Mapeamento de riscos','Apoio a decisões','Políticas internas','Prevenção de litígios'], approach:'A consultoria transforma questões jurídicas em informações claras para apoiar decisões responsáveis e documentadas.' },
   { slug:'regulatorio', title:'Regulatório', summary:'Apoio jurídico em temas regulatórios e ambientes normativos complexos.', intro:'Assessoria em ambientes regulados, com acompanhamento de normas, riscos e obrigações aplicáveis às operações.', services:['Análise regulatória','Acompanhamento normativo','Consultas e pareceres','Mapeamento de obrigações','Apoio institucional'], approach:'O trabalho parte da leitura técnica da regulação e de seus impactos concretos sobre processos, produtos e decisões empresariais.' },
+  {
+    slug: 'direito-digital-lgpd',
+    title: 'Direito Digital e LGPD',
+    summary:
+      'Assessoria jurídica em questões relacionadas à tecnologia, proteção de dados, privacidade e relações no ambiente digital.',
+    intro:
+      'Atuação jurídica em questões que envolvem tecnologia, proteção de dados pessoais, privacidade e utilização de recursos digitais, considerando os impactos jurídicos das novas formas de interação, trabalho e negócio.',
+    services: [
+      'Adequação e orientação sobre LGPD',
+      'Privacidade e proteção de dados pessoais',
+      'Políticas de privacidade e documentos relacionados',
+      'Análise jurídica de tratamentos de dados pessoais',
+      'Contratos e relações no ambiente digital',
+      'Questões jurídicas envolvendo plataformas e serviços digitais',
+      'Monitoramento e privacidade no ambiente de trabalho',
+      'Análise de riscos jurídicos relacionados à tecnologia'
+    ],
+    approach:
+      'A atuação combina análise jurídica e compreensão técnica do ambiente digital, buscando identificar riscos, responsabilidades e alternativas juridicamente adequadas para o tratamento de questões relacionadas à tecnologia, privacidade e proteção de dados.'
+  },
+  {
+    slug: 'direito-imobiliario',
+    title: 'Direito Imobiliário',
+    summary:
+      'Assessoria jurídica em relações imobiliárias, contratos, locações e questões relacionadas à utilização e proteção de imóveis.',
+    intro:
+      'Atuação jurídica em questões imobiliárias que envolvem contratos, locações, direitos e obrigações relacionados à propriedade e à utilização de imóveis.',
+    services: [
+      'Contratos imobiliários',
+      'Locação de imóveis',
+      'Análise e revisão de contratos de locação',
+      'Inadimplência locatícia',
+      'Ações de despejo',
+      'Cobrança de aluguéis e encargos',
+      'Análise documental imobiliária',
+      'Consultoria jurídica em questões imobiliárias'
+    ],
+    approach:
+      'Cada questão imobiliária é analisada a partir da documentação, da relação jurídica existente e dos objetivos envolvidos, com avaliação dos riscos e das medidas extrajudiciais ou judiciais juridicamente disponíveis.'
+  },
 ];
 
 export const lawyers: Lawyer[] = [
@@ -99,7 +139,7 @@ export const articles: Article[] = [
       excerpt: 'O caso do Itaú revela um conflito entre monitoramento digital e privacidade no home office. A legislação permite a fiscalização do trabalho remoto, mas impõe limites relacionados à transparência, finalidade, proporcionalidade e proteção de dados.',
       date: '10 set. 2025',
       authorSlug: 'adilson-furlani',
-      readTime: '14 min',
+      readTime: '14 min',areaSlugs: ['direito-digital-lgpd'],
       podcast: {
         platform: 'LinkedIn',
         url: 'https://www.linkedin.com/feed/update/urn:li:activity:7374885820425666562',
@@ -173,7 +213,7 @@ export const articles: Article[] = [
   excerpt: 'Uma análise sobre a inadimplência na locação de imóveis, a ação de despejo e os instrumentos jurídicos disponíveis ao locador para a retomada do imóvel.',
   date: '23 abr. 2023',
   authorSlug: 'adilson-furlani',
-  readTime: '18 min', areaSlugs: ['contratos'],
+  readTime: '18 min', areaSlugs: ['direito-imobiliario', 'contratos'],
   body: [
     'Introdução',
     '    A inadimplência em contratos de locação pode gerar dificuldades relevantes para o proprietário do imóvel, especialmente quando os aluguéis e outros encargos permanecem em atraso e o locatário continua ocupando o bem. Nessas situações, é importante compreender quais medidas podem ser adotadas para cobrança dos valores e eventual retomada do imóvel.',
