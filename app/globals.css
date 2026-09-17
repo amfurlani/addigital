@@ -1103,13 +1103,35 @@ blockquote p {
 }
 
 
-/* Artigos publicados — página do autor */
+/* ============================================================
+   PUBLICAÇÕES — PÁGINA DO AUTOR
+   ============================================================ */
 
-.author-article-title {
+.publication.author-article-title {
   color: var(--gold-light);
-  transition: opacity 0.2s ease;
+  align-items: center;
+  gap: 20px;
 }
 
-.author-article-title:hover {
-  opacity: 0.8;
+.publication.author-article-title span {
+  color: var(--gold-light);
+}
+
+.publication.author-article-title svg {
+  flex-shrink: 0;
+  color: var(--gold-main);
+  stroke: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.publication.author-article-title:hover {
+  color: var(--gold-main);
+}
+
+.publication.author-article-title:hover span {
+  color: var(--gold-main);
+}
+
+.publication.author-article-title:hover svg {
+  transform: translateX(4px);
 }
