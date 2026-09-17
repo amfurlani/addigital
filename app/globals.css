@@ -1692,3 +1692,28 @@ blockquote p {
     align-items: flex-start;
   }
 }
+
+
+.person-card.large {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.person-card.large .team-card-photo,
+.person-card.large .avatar {
+  flex-shrink: 0;
+}
+
+.person-card.large > span:not(.text-link) {
+  display: block;
+  margin-top: 4px;
+}
+
+.person-card.large h2 {
+  width: 100%;
+}
+
+.person-card.large .text-link {
+  margin-top: auto;
+}
