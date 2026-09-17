@@ -97,6 +97,7 @@ export default async function Page({
                   <Link
                     className="publication"
                     href={`/conteudo/${a.slug}`}
+                    className="author-article-title"
                     key={a.slug}
                   >
                     {a.title}
