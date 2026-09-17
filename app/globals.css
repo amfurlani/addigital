@@ -1101,3 +1101,15 @@ blockquote p {
 .article-podcast + * {
   margin-top: 0;
 }
+
+
+/* Artigos publicados — página do autor */
+
+.author-article-title {
+  color: var(--gold-light);
+  transition: opacity 0.2s ease;
+}
+
+.author-article-title:hover {
+  opacity: 0.8;
+}
