@@ -95,12 +95,11 @@ export default async function Page({
 
                 {pubs.map(a => (
                   <Link
-                    // className="publication"
                     href={`/conteudo/${a.slug}`}
-                    className="author-article-title"
+                    className="publication author-article-title"
                     key={a.slug}
                   >
-                    {a.title}
+                    <span>{a.title}</span>
                     <ArrowRight size={15} />
                   </Link>
                 ))}
