@@ -1265,3 +1265,75 @@ blockquote p {
     flex: 1;
   }
 }
+
+
+/* ============================================================
+   ARTIGOS — ÁREAS DE ATUAÇÃO RELACIONADAS
+   ============================================================ */
+
+.article-related-areas {
+  padding-top: 20px;
+}
+
+.article-related-areas h2 {
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.article-related-areas-list {
+  display: grid;
+  gap: 12px;
+}
+
+.article-related-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+
+  padding: 20px 22px;
+
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold-main);
+  border-radius: 5px;
+
+  background: var(--graphite);
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.article-related-area:hover {
+  border-color: rgba(200, 164, 93, 0.55);
+  transform: translateY(-2px);
+}
+
+.article-related-area strong {
+  display: block;
+  margin-bottom: 6px;
+
+  color: var(--gold-light);
+  font-size: 17px;
+}
+
+.article-related-area p {
+  margin: 0;
+
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.article-related-area .text-link {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 650px) {
+  .article-related-area {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+}
