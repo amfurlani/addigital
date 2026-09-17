@@ -106,12 +106,54 @@ export default async function Page({
             p.startsWith('Introdução:') ||
             p.startsWith('Conclusão:') ||
             /^\d+(\.\d+)*\.\s/.test(p);
-
+      
           if (isHeading) {
             return <h2 key={i}>{p}</h2>;
           }
-
-          return <p key={i}>{p}</p>;
+      
+          const isLastParagraph =
+            !a.body
+              .slice(i + 1)
+              .some((item) => {
+                const nextIsHeading =
+                  item === 'Introdução' ||
+                  item === 'Conclusão' ||
+                  item === 'Referências Bibliográficas' ||
+                  item === 'Referências e fontes do artigo original' ||
+                  item.startsWith('Introdução:') ||
+                  item.startsWith('Conclusão:') ||
+                  /^\d+(\.\d+)*\.\s/.test(item);
+      
+                return !nextIsHeading;
+              });
+      
+          const urlRegex = /(https?:\/\/[^\s]+)/g;
+          const parts = p.split(urlRegex);
+      
+          return (
+            <p
+              key={i}
+              className={isLastParagraph ? 'article-closing' : undefined}
+            >
+              {parts.map((part, partIndex) => {
+                if (/^https?:\/\//.test(part)) {
+                  return (
+                    <a
+                      key={partIndex}
+                      href={part}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="article-url"
+                    >
+                      {part}
+                    </a>
+                  );
+                }
+      
+                return part;
+              })}
+            </p>
+          );
         })}
       </div>
 
