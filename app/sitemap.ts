@@ -1,2 +1,52 @@
-import type { MetadataRoute } from 'next';import { areas, articles, lawyers } from '@/lib/data';
-export default function sitemap():MetadataRoute.Sitemap{const base=process.env.NEXT_PUBLIC_SITE_URL||'https://www.seudominio.com.br';const staticRoutes=['','/o-escritorio','/areas-de-atuacao','/equipe','/experiencia','/conteudo','/avaliacoes','/contato','/politica-de-privacidade'];return [...staticRoutes.map(r=>({url:`${base}${r}`,lastModified:new Date()})),...areas.map(a=>({url:`${base}/areas-de-atuacao/${a.slug}`,lastModified:new Date()})),...lawyers.map(p=>({url:`${base}/equipe/${p.slug}`,lastModified:new Date()})),...articles.map(a=>({url:`${base}/conteudo/${a.slug}`,lastModified:new Date()}))]}
+import type { MetadataRoute } from 'next';
+import { articles, lawyers } from '@/lib/data';
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = 'https://addigital.adv.br';
+
+  const staticPages: MetadataRoute.Sitemap = [
+    {
+      url: baseUrl,
+      changeFrequency: 'weekly',
+      priority: 1,
+    },
+    {
+      url: `${baseUrl}/atuacao`,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/equipe`,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/conteudo`,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/contato`,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+  ];
+
+  const articlePages: MetadataRoute.Sitemap = articles.map((article) => ({
+    url: `${baseUrl}/conteudo/${article.slug}`,
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }));
+
+  const lawyerPages: MetadataRoute.Sitemap = lawyers.map((lawyer) => ({
+    url: `${baseUrl}/equipe/${lawyer.slug}`,
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }));
+
+  return [
+    ...staticPages,
+    ...articlePages,
+    ...lawyerPages,
+  ];
+}
