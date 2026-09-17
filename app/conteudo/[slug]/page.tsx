@@ -63,13 +63,6 @@ export default async function Page({
         </div>
       </header>
 
-      <div className="container article-content-width">
-        <ArticleNarrator
-          title={a.title}
-          body={a.body}
-        />
-      </div>
-
       {/* PODCAST / LINKEDIN */}
       {a.podcast?.embedUrl && (
         <div className="container article-content-width">
@@ -77,13 +70,13 @@ export default async function Page({
 
             <div className="article-podcast-header">
               <span className="podcast-eyebrow">
-                OUÇA TAMBÉM
+                NOSSO PODCAST - DEEP DIVE
               </span>
 
-              <h2>Prefere ouvir este conteúdo?</h2>
+              <h2>Prefere ouvir este debate em nosso Podcast?</h2>
 
               <p>
-                Confira a versão em áudio deste artigo publicada no LinkedIn.
+                Confira o debate deste artigo publicado em nosso Podcast "Deep Dive" no LinkedIn.
               </p>
             </div>
 
@@ -102,6 +95,13 @@ export default async function Page({
           </section>
         </div>
       )}
+
+      <div className="container article-content-width">
+        <ArticleNarrator
+          title={a.title}
+          body={a.body}
+        />
+      </div>
 
       {/* TEXTO DO ARTIGO */}
       <div className="container article-body article-content-width">
