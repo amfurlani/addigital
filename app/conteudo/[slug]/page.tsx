@@ -64,7 +64,7 @@ export default async function Page({
 
       {/* PODCAST / LINKEDIN */}
       {a.podcast?.embedUrl && (
-        <div className="container">
+        <div className="container article-body">
           <section className="article-podcast">
 
             <div className="article-podcast-header">
