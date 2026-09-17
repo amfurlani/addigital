@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { articles, lawyers } from '@/lib/data';
+import { articles, lawyers, areas } from '@/lib/data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://addigital.adv.br';
@@ -44,8 +44,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
+  const areaPages: MetadataRoute.Sitemap = areas.map((area) => ({
+    url: `${baseUrl}/areas-de-atuacao/${area.slug}`,
+    changeFrequency: 'monthly',
+    priority: 0.9,
+  }));
+
   return [
     ...staticPages,
+    ...areaPages,
     ...articlePages,
     ...lawyerPages,
   ];
