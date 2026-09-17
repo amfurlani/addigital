@@ -95,7 +95,7 @@ export default async function Page({
 
                 {pubs.map(a => (
                   <Link
-                    className="publication"
+                    // className="publication"
                     href={`/conteudo/${a.slug}`}
                     className="author-article-title"
                     key={a.slug}
