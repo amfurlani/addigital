@@ -1,25 +1,73 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { lawyers, articles } from '@/lib/data';
 import { PageHero } from '@/components/PageHero';
 import { CTA } from '@/components/CTA';
-import Image from 'next/image';
+
+const baseUrl = 'https://addigital.adv.br';
 
 export function generateStaticParams() {
-  return lawyers.map(x => ({ slug: x.slug }));
+  return lawyers.map((lawyer) => ({
+    slug: lawyer.slug,
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
-}) {
+}): Promise<Metadata> {
   const { slug } = await params;
-  const p = lawyers.find(x => x.slug === slug);
+
+  const person = lawyers.find(
+    (lawyer) => lawyer.slug === slug
+  );
+
+  if (!person) {
+    return {
+      title: 'Equipe',
+    };
+  }
+
+  const profileUrl =
+    `${baseUrl}/equipe/${person.slug}`;
+
+  const description = person.bio;
 
   return {
-    title: p?.name || 'Equipe',
+    title: person.name,
+
+    description,
+
+    alternates: {
+      canonical: profileUrl,
+    },
+
+    openGraph: {
+      type: 'profile',
+      locale: 'pt_BR',
+      url: profileUrl,
+      siteName: 'AD Advocacia Digital',
+      title: `${person.name} | AD Advocacia Digital`,
+      description,
+
+      ...(person.image && {
+        images: [
+          {
+            url: `${baseUrl}${person.image}`,
+            alt: person.name,
+          },
+        ],
+      }),
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 
@@ -30,18 +78,104 @@ export default async function Page({
 }) {
   const { slug } = await params;
 
-  const p = lawyers.find(x => x.slug === slug);
+  const person = lawyers.find(
+    (lawyer) => lawyer.slug === slug
+  );
 
-  if (!p) notFound();
+  if (!person) notFound();
 
-  const pubs = articles.filter(a => a.authorSlug === p.slug);
+  const publications = articles.filter(
+    (article) =>
+      article.authorSlug === person.slug
+  );
+
+  const profileUrl =
+    `${baseUrl}/equipe/${person.slug}`;
+
+  /*
+   * Dados estruturados do perfil profissional.
+   *
+   * Neste momento não incluímos credenciais profissionais
+   * adicionais além das informações que já estão efetivamente
+   * cadastradas no site.
+   */
+  const personJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+
+    name: person.name,
+    url: profileUrl,
+
+    ...(person.image && {
+      image: `${baseUrl}${person.image}`,
+    }),
+
+    jobTitle: person.role,
+
+    description: person.bio,
+
+    worksFor: {
+      '@type': 'Organization',
+      name: 'AD Advocacia Digital',
+      url: baseUrl,
+    },
+
+    knowsAbout: person.areas,
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Início',
+        item: baseUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Equipe',
+        item: `${baseUrl}/equipe`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: person.name,
+        item: profileUrl,
+      },
+    ],
+  };
 
   return (
     <>
+      {/* DADOS ESTRUTURADOS — PERFIL */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(personJsonLd).replace(
+            /</g,
+            '\\u003c'
+          ),
+        }}
+      />
+
+      {/* DADOS ESTRUTURADOS — BREADCRUMB */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd
+          ).replace(/</g, '\\u003c'),
+        }}
+      />
+
       <PageHero
-        eyebrow={`${p.role} · ${p.oab}`}
-        title={p.name}
-        text={p.areas.join(' · ')}
+        eyebrow={`${person.role} · ${person.oab}`}
+        title={person.name}
+        text={person.areas.join(' · ')}
       />
 
       <section className="section">
@@ -49,10 +183,10 @@ export default async function Page({
 
           <aside className="profile-aside">
 
-            {p.image ? (
+            {person.image ? (
               <Image
-                src={p.image}
-                alt={p.name}
+                src={person.image}
+                alt={person.name}
                 width={240}
                 height={300}
                 className="profile-photo"
@@ -60,53 +194,83 @@ export default async function Page({
               />
             ) : (
               <div className="avatar">
-                {p.name
+                {person.name
                   .split(' ')
                   .slice(0, 2)
-                  .map(x => x[0])
+                  .map((x) => x[0])
                   .join('')}
               </div>
             )}
 
             <h3>Formação</h3>
 
-            {p.education.map(x => (
-              <p key={x}>{x}</p>
+            {person.education.map((item) => (
+              <p key={item}>
+                {item}
+              </p>
             ))}
 
           </aside>
 
           <div className="prose">
 
+            <span className="eyebrow">
+              PERFIL PROFISSIONAL
+            </span>
+
             <h2>Experiência profissional</h2>
-            <p>{p.bio}</p>
+
+            <p>{person.bio}</p>
 
             <h2>Áreas de atuação</h2>
 
             <ul>
-              {p.areas.map(x => (
-                <li key={x}>{x}</li>
+              {person.areas.map((area) => (
+                <li key={area}>
+                  {area}
+                </li>
               ))}
             </ul>
 
-            {pubs.length > 0 && (
-              <>
+            {publications.length > 0 && (
+              <section className="profile-publications">
+
+                <span className="eyebrow">
+                  CONTEÚDO
+                </span>
+
                 <h2>Publicações</h2>
 
-                {pubs.map(a => (
+                <p className="profile-publications-intro">
+                  Artigos e análises publicados por{' '}
+                  {person.name}.
+                </p>
+
+                {publications.map((article) => (
                   <Link
-                    href={`/conteudo/${a.slug}`}
+                    href={`/conteudo/${article.slug}`}
                     className="publication author-article-title"
-                    key={a.slug}
+                    key={article.slug}
                   >
-                    <span>{a.title}</span>
+                    <div>
+                      <small>
+                        {article.category} · {article.date}
+                      </small>
+
+                      <span>
+                        {article.title}
+                      </span>
+                    </div>
+
                     <ArrowRight size={15} />
                   </Link>
                 ))}
-              </>
+
+              </section>
             )}
 
           </div>
+
         </div>
       </section>
 
