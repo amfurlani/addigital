@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import { site } from '@/lib/site';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -17,9 +19,100 @@ import {
 import { SectionTitle } from '@/components/SectionTitle';
 import { CTA } from '@/components/CTA';
 
+const baseUrl = 'https://addigital.adv.br';
+
+export const metadata: Metadata = {
+  title: 'Advocacia em São Paulo',
+
+  description:
+    'AD - Advocacia Digital. Atuação jurídica consultiva e contenciosa para empresas e pessoas em São Paulo e Grande São Paulo.',
+
+  alternates: {
+    canonical: baseUrl,
+  },
+
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    url: baseUrl,
+    siteName: 'AD Advocacia Digital',
+    title: 'AD - Advocacia Digital | Advocacia em São Paulo',
+    description:
+      'Atuação jurídica consultiva e contenciosa para empresas e pessoas em São Paulo e Grande São Paulo.',
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
 export default function Home() {
+    const professionalJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+
+    name: site.responsibleName,
+
+    url: `${baseUrl}/equipe/adilson-furlani`,
+
+    jobTitle: 'Advogado',
+
+    identifier: site.oab,
+
+    worksFor: {
+      '@type': 'Organization',
+      name: site.displayName,
+      url: baseUrl,
+    },
+
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: site.streetAddress,
+      addressLocality: site.addressLocality,
+      addressRegion: site.addressRegion,
+      postalCode: site.postalCode,
+      addressCountry: site.addressCountry,
+    },
+
+    email: site.email,
+
+    telephone: site.phoneInternational,
+
+    sameAs: [
+      site.linkedin,
+    ],
+  };
+
+  const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+
+    name: site.displayName,
+    url: baseUrl,
+    inLanguage: 'pt-BR',
+  };
   return (
     <>
+      {/* DADOS ESTRUTURADOS — RESPONSÁVEL PROFISSIONAL */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            professionalJsonLd
+          ).replace(/</g, '\\u003c'),
+        }}
+      />
+
+      {/* DADOS ESTRUTURADOS — SITE */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            websiteJsonLd
+          ).replace(/</g, '\\u003c'),
+        }}
+      />
       <section className="hero">
         <div className="container hero-grid">
           <div>
@@ -125,7 +218,7 @@ export default function Home() {
                 key={a.slug}
               >
                 <span className="number">
-                  0{i + 1}
+                  {String(i + 1).padStart(2, '0')}
                 </span>
 
                 <h3>{a.title}</h3>
