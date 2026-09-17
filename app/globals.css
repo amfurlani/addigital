@@ -1135,3 +1135,31 @@ blockquote p {
 .publication.author-article-title:hover svg {
   transform: translateX(4px);
 }
+
+
+/* ============================================================
+   ARTIGOS — PARÁGRAFO FINAL E URLs
+   ============================================================ */
+
+/* Último parágrafo do artigo */
+.article-body .article-closing {
+  color: var(--gold-light);
+  font-style: italic;
+  border-top: 1px solid rgba(200, 164, 93, 0.22);
+  padding-top: 24px;
+  margin-top: 36px;
+}
+
+/* URLs existentes no texto */
+.article-body .article-url {
+  color: var(--gold-light);
+  text-decoration: underline;
+  text-decoration-color: rgba(200, 164, 93, 0.45);
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.article-body .article-url:hover {
+  color: var(--gold-main);
+  text-decoration-color: var(--gold-main);
+}
