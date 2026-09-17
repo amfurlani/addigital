@@ -1,8 +1,28 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { articles, lawyers } from '@/lib/data';
 import { ArticleNarrator } from '@/components/ArticleNarrator';
+
+const baseUrl = 'https://addigital.adv.br';
+
+/**
+ * Converte datas usadas no data.ts:
+ * "10/09/2025 às 17:55" -> "2025-09-10T17:55:00-03:00"
+ * "10/09/2025"          -> "2025-09-10T12:00:00-03:00"
+ */
+function toIsoDate(date: string) {
+  const match = date.match(
+    /(\d{2})\/(\d{2})\/(\d{4})(?:\s+às\s+(\d{2}):(\d{2}))?/
+  );
+
+  if (!match) return undefined;
+
+  const [, day, month, year, hour = '12', minute = '00'] = match;
+
+  return `${year}-${month}-${day}T${hour}:${minute}:00-03:00`;
+}
 
 export function generateStaticParams() {
   return articles.map((x) => ({
@@ -14,13 +34,67 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
-}) {
+}): Promise<Metadata> {
   const { slug } = await params;
+
   const a = articles.find((x) => x.slug === slug);
 
+  if (!a) {
+    return {
+      title: 'Conteúdo',
+    };
+  }
+
+  const author = lawyers.find((x) => x.slug === a.authorSlug);
+
+  const articleUrl = `${baseUrl}/conteudo/${a.slug}`;
+  const publishedTime = toIsoDate(a.date);
+
   return {
-    title: a?.title || 'Conteúdo',
-    description: a?.excerpt,
+    title: a.title,
+
+    description: a.excerpt,
+
+    alternates: {
+      canonical: articleUrl,
+    },
+
+    authors: author
+      ? [
+          {
+            name: author.name,
+            url: `${baseUrl}/equipe/${author.slug}`,
+          },
+        ]
+      : undefined,
+
+    openGraph: {
+      type: 'article',
+      locale: 'pt_BR',
+      url: articleUrl,
+      siteName: 'AD Advocacia Digital',
+      title: a.title,
+      description: a.excerpt,
+      publishedTime,
+      authors: author
+        ? [`${baseUrl}/equipe/${author.slug}`]
+        : undefined,
+    },
+
+    twitter: {
+      card: 'summary',
+      title: a.title,
+      description: a.excerpt,
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
   };
 }
 
@@ -37,8 +111,61 @@ export default async function Page({
 
   const author = lawyers.find((x) => x.slug === a.authorSlug);
 
+  const articleUrl = `${baseUrl}/conteudo/${a.slug}`;
+  const publishedTime = toIsoDate(a.date);
+
+  /*
+   * Dados estruturados para Google.
+   *
+   * Não adicionamos "image" neste momento porque os artigos
+   * ainda não possuem uma imagem editorial própria cadastrada.
+   * É melhor omitir do que usar uma imagem que não represente
+   * especificamente o conteúdo.
+   */
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+
+    headline: a.title,
+    description: a.excerpt,
+
+    url: articleUrl,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': articleUrl,
+    },
+
+    ...(publishedTime && {
+      datePublished: publishedTime,
+    }),
+
+    ...(author && {
+      author: {
+        '@type': 'Person',
+        name: author.name,
+        url: `${baseUrl}/equipe/${author.slug}`,
+      },
+    }),
+
+    publisher: {
+      '@type': 'Organization',
+      name: 'AD Advocacia Digital',
+      url: baseUrl,
+    },
+
+    inLanguage: 'pt-BR',
+  };
+
   return (
     <article>
+
+      {/* DADOS ESTRUTURADOS — GOOGLE */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
 
       {/* CABEÇALHO DO ARTIGO */}
       <header className="article-hero">
@@ -76,7 +203,8 @@ export default async function Page({
               <h2>Prefere ouvir este debate em nosso Podcast?</h2>
 
               <p>
-                Confira o debate deste artigo publicado em nosso Podcast "Deep Dive" no LinkedIn.
+                Confira o debate deste artigo publicado em nosso Podcast
+                &quot;Deep Dive&quot; no LinkedIn.
               </p>
             </div>
 
@@ -96,6 +224,7 @@ export default async function Page({
         </div>
       )}
 
+      {/* NARRADOR */}
       <div className="container article-content-width">
         <ArticleNarrator
           title={a.title}
@@ -114,11 +243,11 @@ export default async function Page({
             p.startsWith('Introdução:') ||
             p.startsWith('Conclusão:') ||
             /^\d+(\.\d+)*\.\s/.test(p);
-      
+
           if (isHeading) {
             return <h2 key={i}>{p}</h2>;
           }
-      
+
           const isLastParagraph =
             !a.body
               .slice(i + 1)
@@ -131,13 +260,13 @@ export default async function Page({
                   item.startsWith('Introdução:') ||
                   item.startsWith('Conclusão:') ||
                   /^\d+(\.\d+)*\.\s/.test(item);
-      
+
                 return !nextIsHeading;
               });
-      
+
           const urlRegex = /(https?:\/\/[^\s]+)/g;
           const parts = p.split(urlRegex);
-      
+
           return (
             <p
               key={i}
@@ -157,7 +286,7 @@ export default async function Page({
                     </a>
                   );
                 }
-      
+
                 return part;
               })}
             </p>
