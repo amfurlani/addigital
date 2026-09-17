@@ -64,7 +64,7 @@ export default async function Page({
 
       {/* PODCAST / LINKEDIN */}
       {a.podcast?.embedUrl && (
-        <div className="container article-body">
+        <div className="container article-content-width">
           <section className="article-podcast">
 
             <div className="article-podcast-header">
@@ -96,7 +96,7 @@ export default async function Page({
       )}
 
       {/* TEXTO DO ARTIGO */}
-      <div className="container article-body">
+      <div className="container article-body article-content-width">
         {a.body.map((p, i) => {
           const isHeading =
             p === 'Introdução' ||
@@ -104,6 +104,7 @@ export default async function Page({
             p === 'Referências Bibliográficas' ||
             p === 'Referências e fontes do artigo original' ||
             p.startsWith('Introdução:') ||
+            p.startsWith('Conclusão:') ||
             /^\d+(\.\d+)*\.\s/.test(p);
 
           if (isHeading) {
