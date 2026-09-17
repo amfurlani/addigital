@@ -76,12 +76,8 @@ export default async function Page({
    * Em uma etapa posterior vamos melhorar o relacionamento
    * entre artigos e áreas usando slugs, em vez de palavras.
    */
-  const related = articles.filter((a) =>
-    a.category
-      .toLowerCase()
-      .includes(
-        area.title.split(' ')[1]?.toLowerCase() || ''
-      )
+  const related = articles.filter((article) =>
+    article.areaSlugs?.includes(area.slug)
   );
 
   const breadcrumbJsonLd = {
