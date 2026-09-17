@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { articles, lawyers } from '@/lib/data';
+import { articles, lawyers, areas } from '@/lib/data';
 import { ArticleNarrator } from '@/components/ArticleNarrator';
 
 const baseUrl = 'https://addigital.adv.br';
@@ -293,6 +293,50 @@ export default async function Page({
           );
         })}
       </div>
+
+      {/* ÁREAS DE ATUAÇÃO RELACIONADAS */}
+      {a.areaSlugs && a.areaSlugs.length > 0 && (
+        <section className="section article-related-areas">
+          <div className="container article-content-width">
+
+            <span className="eyebrow">
+              ÁREAS RELACIONADAS
+            </span>
+
+            <h2>
+              Atuação relacionada a este conteúdo
+            </h2>
+
+            <div className="article-related-areas-list">
+              {a.areaSlugs.map((areaSlug) => {
+                const relatedArea = areas.find(
+                  (area) => area.slug === areaSlug
+                );
+
+                if (!relatedArea) return null;
+
+                return (
+                  <Link
+                    key={relatedArea.slug}
+                    href={`/areas-de-atuacao/${relatedArea.slug}`}
+                    className="article-related-area"
+                  >
+                    <div>
+                      <strong>{relatedArea.title}</strong>
+                      <p>{relatedArea.summary}</p>
+                    </div>
+
+                    <span className="text-link">
+                      Conheça a atuação →
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+
+          </div>
+        </section>
+      )}
 
       {/* AUTOR */}
       {author && (
