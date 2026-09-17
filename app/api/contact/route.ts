@@ -4,6 +4,9 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const CONTACT_EMAIL = 'a.furlani+adv@gmail.com';
+const PRODUCTION_ORIGIN = 'https://addigital.adv.br';
+
+const MAX_BODY_SIZE = 10_000;
 
 function validEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -24,8 +27,33 @@ function escapeHtml(value: string) {
     .replace(/'/g, '&#039;');
 }
 
+function allowedOrigin(origin: string | null) {
+  /*
+   * Em produção, somente o domínio oficial pode chamar
+   * o formulário pelo navegador.
+   *
+   * Em desenvolvimento, localhost também é permitido.
+   */
+  if (origin === PRODUCTION_ORIGIN) {
+    return true;
+  }
+
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    origin &&
+    /^http:\/\/localhost:\d+$/.test(origin)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 export async function POST(req: Request) {
   try {
+    /*
+     * 1. O serviço de e-mail precisa estar configurado.
+     */
     if (!process.env.RESEND_API_KEY) {
       console.error(
         '[CONTACT_FORM] RESEND_API_KEY não configurada.'
@@ -40,8 +68,116 @@ export async function POST(req: Request) {
       );
     }
 
-    const body = await req.json();
+    /*
+     * 2. Aceitamos somente JSON.
+     */
+    const contentType = req.headers.get('content-type');
 
+    if (
+      !contentType ||
+      !contentType
+        .toLowerCase()
+        .startsWith('application/json')
+    ) {
+      return NextResponse.json(
+        {
+          error: 'Requisição inválida.',
+        },
+        { status: 415 }
+      );
+    }
+
+    /*
+     * 3. Verificação de origem.
+     *
+     * Isso dificulta submissões feitas diretamente
+     * por páginas hospedadas em outros domínios.
+     */
+    const origin = req.headers.get('origin');
+
+    if (!allowedOrigin(origin)) {
+      console.warn(
+        '[CONTACT_FORM] Origem rejeitada:',
+        origin ?? 'ausente'
+      );
+
+      return NextResponse.json(
+        {
+          error: 'Requisição inválida.',
+        },
+        { status: 403 }
+      );
+    }
+
+    /*
+     * 4. Limite do corpo da requisição.
+     *
+     * Content-Length é apenas uma primeira barreira.
+     * O tamanho real também será conferido depois.
+     */
+    const contentLength = Number(
+      req.headers.get('content-length') ?? '0'
+    );
+
+    if (
+      Number.isFinite(contentLength) &&
+      contentLength > MAX_BODY_SIZE
+    ) {
+      return NextResponse.json(
+        {
+          error: 'Requisição inválida.',
+        },
+        { status: 413 }
+      );
+    }
+
+    /*
+     * 5. Lemos primeiro como texto para também limitar
+     * o tamanho real recebido.
+     */
+    const rawBody = await req.text();
+
+    if (
+      !rawBody ||
+      rawBody.length > MAX_BODY_SIZE
+    ) {
+      return NextResponse.json(
+        {
+          error: 'Requisição inválida.',
+        },
+        { status: 413 }
+      );
+    }
+
+    let body: Record<string, unknown>;
+
+    try {
+      const parsed: unknown = JSON.parse(rawBody);
+
+      if (
+        typeof parsed !== 'object' ||
+        parsed === null ||
+        Array.isArray(parsed)
+      ) {
+        throw new Error('Invalid JSON object');
+      }
+
+      body = parsed as Record<string, unknown>;
+    } catch {
+      return NextResponse.json(
+        {
+          error: 'Requisição inválida.',
+        },
+        { status: 400 }
+      );
+    }
+
+    /*
+     * 6. Normalização dos campos.
+     *
+     * Os limites existem no frontend e novamente aqui,
+     * porque o frontend pode ser contornado.
+     */
     const name = clean(body.name, 120);
     const email = clean(body.email, 200);
     const phone = clean(body.phone, 30);
@@ -52,16 +188,26 @@ export async function POST(req: Request) {
     const privacy = clean(body.privacy, 10);
 
     /*
-     * Honeypot anti-spam.
-     * Usuários reais não veem nem preenchem este campo.
+     * 7. Honeypot.
+     *
+     * Usuários normais nunca preenchem "website".
+     * Para bots, respondemos como se tudo tivesse dado
+     * certo para não revelar a barreira anti-spam.
      */
     if (website) {
+      console.info(
+        '[CONTACT_FORM] Honeypot acionado.'
+      );
+
       return NextResponse.json({
         message:
-          'Mensagem recebida. Retornaremos o contato quando possível.',
+          'Mensagem enviada com sucesso. Retornaremos o contato quando possível.',
       });
     }
 
+    /*
+     * 8. Validação server-side.
+     */
     if (
       name.length < 2 ||
       !validEmail(email) ||
@@ -78,23 +224,37 @@ export async function POST(req: Request) {
       );
     }
 
+    /*
+     * 9. Escapamos todo conteúdo inserido pelo usuário
+     * antes de incorporá-lo ao HTML do e-mail.
+     */
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
     const safePhone = escapeHtml(phone);
     const safeCompany = escapeHtml(company);
     const safeSubject = escapeHtml(subject);
+
     const safeMessage = escapeHtml(message)
       .replace(/\r\n/g, '\n')
       .replace(/\n/g, '<br />');
 
+    /*
+     * 10. Envio pelo Resend.
+     */
     const { data, error } = await resend.emails.send({
-      from: 'AD Advocacia Digital <site@addigital.adv.br>',
+      from:
+        'AD Advocacia Digital <site@addigital.adv.br>',
 
       to: [CONTACT_EMAIL],
 
+      /*
+       * Ao responder à notificação, a resposta será
+       * destinada ao e-mail informado pelo visitante.
+       */
       replyTo: email,
 
-      subject: `Novo contato pelo site — ${subject}`,
+      subject:
+        `Novo contato pelo site — ${subject}`,
 
       html: `
         <!doctype html>
@@ -234,8 +394,15 @@ export async function POST(req: Request) {
         .join('\n'),
     });
 
+    /*
+     * 11. O Resend recebeu a chamada, mas recusou
+     * o envio.
+     */
     if (error) {
-      console.error('[CONTACT_FORM] Resend:', error);
+      console.error(
+        '[CONTACT_FORM] Resend:',
+        error
+      );
 
       return NextResponse.json(
         {
@@ -246,6 +413,10 @@ export async function POST(req: Request) {
       );
     }
 
+    /*
+     * Não registramos nome, e-mail, telefone ou
+     * mensagem do visitante nos nossos próprios logs.
+     */
     console.info(
       '[CONTACT_FORM] Mensagem enviada:',
       data?.id
@@ -256,7 +427,10 @@ export async function POST(req: Request) {
         'Mensagem enviada com sucesso. Retornaremos o contato quando possível.',
     });
   } catch (error) {
-    console.error('[CONTACT_FORM] Erro:', error);
+    console.error(
+      '[CONTACT_FORM] Erro:',
+      error
+    );
 
     return NextResponse.json(
       {
