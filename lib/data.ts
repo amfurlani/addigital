@@ -39,12 +39,432 @@ export type Article = {
 };
 
 export const areas: Area[] = [
-  { slug:'direito-tributario', title:'Direito Tributário', summary:'Assessoria e atuação em questões tributárias administrativas e judiciais.', intro:'Atuação jurídica em questões tributárias que exigem análise técnica, visão estratégica e compreensão do ambiente empresarial.', services:['Planejamento tributário','Análise de questões fiscais','Consultoria tributária','Recuperação de créditos','Processos administrativos','Processos judiciais','Análise de riscos tributários','Acompanhamento de mudanças legislativas'], approach:'Cada questão tributária é analisada considerando o contexto jurídico, econômico e operacional envolvido, com identificação de riscos, alternativas e caminhos juridicamente adequados.' },
-  { slug:'direito-empresarial', title:'Direito Empresarial', summary:'Estratégias jurídicas alinhadas às necessidades e ao contexto de cada negócio.', intro:'Assessoria jurídica para decisões empresariais, estruturas societárias e situações que exigem integração entre direito e negócio.', services:['Consultoria empresarial','Questões societárias','Governança','Reorganizações','Negociações','Prevenção de conflitos'], approach:'A atuação considera os objetivos do negócio, os riscos envolvidos e as alternativas juridicamente disponíveis para cada decisão.' },
-  { slug:'contratos', title:'Contratos', summary:'Análise, elaboração, negociação e revisão de instrumentos contratuais.', intro:'Estruturação contratual com atenção à clareza, alocação de riscos e aderência à operação das partes.', services:['Elaboração de contratos','Revisão contratual','Negociação','Contratos empresariais','Instrumentos de garantia','Gestão de riscos contratuais'], approach:'Os instrumentos são desenvolvidos a partir da realidade da operação, buscando clareza, coerência e previsibilidade jurídica.' },
-  { slug:'contencioso', title:'Contencioso', summary:'Atuação técnica na condução de demandas judiciais e administrativas.', intro:'Condução estratégica de conflitos com análise de risco, definição de teses e acompanhamento próximo da evolução de cada demanda.', services:['Contencioso cível','Contencioso empresarial','Processos administrativos','Estratégia processual','Negociação e acordos','Gestão de carteira'], approach:'Cada demanda é analisada de forma individualizada, considerando fundamentos jurídicos, evidências, riscos e possíveis desdobramentos.' },
-  { slug:'consultoria-juridica', title:'Consultoria Jurídica', summary:'Análise preventiva de questões jurídicas e identificação de alternativas.', intro:'Apoio jurídico contínuo para decisões que demandam prevenção, estruturação e avaliação de riscos.', services:['Pareceres','Consultas jurídicas','Mapeamento de riscos','Apoio a decisões','Políticas internas','Prevenção de litígios'], approach:'A consultoria transforma questões jurídicas em informações claras para apoiar decisões responsáveis e documentadas.' },
-  { slug:'regulatorio', title:'Regulatório', summary:'Apoio jurídico em temas regulatórios e ambientes normativos complexos.', intro:'Assessoria em ambientes regulados, com acompanhamento de normas, riscos e obrigações aplicáveis às operações.', services:['Análise regulatória','Acompanhamento normativo','Consultas e pareceres','Mapeamento de obrigações','Apoio institucional'], approach:'O trabalho parte da leitura técnica da regulação e de seus impactos concretos sobre processos, produtos e decisões empresariais.' },
+  {
+    slug: 'direito-tributario',
+  
+    title: 'Direito Tributário',
+  
+    summary:
+      'Assessoria jurídica em questões tributárias, planejamento, recuperação de créditos e contencioso administrativo e judicial.',
+  
+    intro:
+      'Atuação jurídica em Direito Tributário voltada à análise de obrigações fiscais, planejamento, recuperação de créditos, prevenção de riscos e condução de questões administrativas e judiciais.',
+  
+    services: [
+      'Planejamento tributário',
+      'Análise de questões fiscais',
+      'Consultoria tributária',
+      'Recuperação de créditos tributários',
+      'Processos administrativos tributários',
+      'Processos judiciais tributários',
+      'Análise de riscos tributários',
+      'Acompanhamento de mudanças legislativas'
+    ],
+  
+    approach:
+      'Cada questão tributária é analisada considerando o contexto jurídico, econômico e operacional envolvido, com identificação de riscos, alternativas e caminhos juridicamente adequados.',
+  
+    seo: {
+      title: 'Direito Tributário',
+      description:
+        'Atuação em Direito Tributário, planejamento tributário, recuperação de créditos, questões fiscais e processos administrativos e judiciais.'
+    },
+  
+    content: {
+      title: 'Direito Tributário e decisões empresariais',
+  
+      paragraphs: [
+        'A tributação está presente em praticamente todas as atividades empresariais e pode produzir impactos relevantes sobre contratos, operações, investimentos e decisões estratégicas. A análise jurídica tributária busca compreender essas consequências e identificar o tratamento aplicável a cada situação.',
+  
+        'Mudanças legislativas, interpretações administrativas e decisões judiciais podem alterar o ambiente tributário ao longo do tempo. Por isso, empresas precisam avaliar não apenas as obrigações existentes, mas também os riscos e oportunidades relacionados à sua estrutura e às operações realizadas.',
+  
+        'A atuação tributária pode ocorrer de forma preventiva, por meio de consultoria e planejamento, ou diante de controvérsias já estabelecidas, inclusive em processos administrativos e judiciais.'
+      ],
+  
+      topics: [
+        {
+          title: 'Planejamento tributário',
+          text:
+            'O planejamento tributário envolve a análise das operações e estruturas existentes para avaliar alternativas juridicamente admitidas, seus efeitos fiscais e os riscos associados a cada decisão.'
+        },
+        {
+          title: 'Recuperação de créditos tributários',
+          text:
+            'A identificação de valores eventualmente recolhidos de forma indevida ou superior ao devido exige análise da legislação, documentação, períodos envolvidos e procedimentos adequados para eventual recuperação ou compensação.'
+        },
+        {
+          title: 'Contencioso tributário',
+          text:
+            'Discussões relacionadas a cobranças, autuações e interpretações fiscais podem ocorrer tanto na esfera administrativa quanto judicial, exigindo análise dos fundamentos jurídicos, documentos e riscos envolvidos.'
+        },
+        {
+          title: 'Reforma e mudanças tributárias',
+          text:
+            'Alterações no sistema tributário podem produzir efeitos sobre preços, contratos, sistemas internos e modelos de negócio. O acompanhamento jurídico contribui para identificar impactos e necessidades de adaptação.'
+        },
+        {
+          title: 'Prevenção de riscos fiscais',
+          text:
+            'A revisão de procedimentos, documentos e operações pode contribuir para identificar pontos de atenção antes que se convertam em autuações, disputas ou custos inesperados.'
+        }
+      ]
+    }
+  },
+  {
+    slug: 'direito-empresarial',
+  
+    title: 'Direito Empresarial',
+  
+    summary:
+      'Assessoria jurídica para empresas, decisões empresariais, estruturas societárias, governança e prevenção de conflitos.',
+  
+    intro:
+      'Atuação em Direito Empresarial voltada ao suporte jurídico de empresas, sócios e gestores em decisões, estruturas societárias, negociações, governança e prevenção de conflitos.',
+  
+    services: [
+      'Consultoria empresarial',
+      'Questões societárias',
+      'Governança',
+      'Reorganizações',
+      'Negociações empresariais',
+      'Prevenção de conflitos',
+      'Análise de riscos jurídicos',
+      'Apoio jurídico a decisões empresariais'
+    ],
+  
+    approach:
+      'A atuação considera os objetivos do negócio, os riscos envolvidos e as alternativas juridicamente disponíveis para cada decisão.',
+  
+    seo: {
+      title: 'Direito Empresarial',
+      description:
+        'Atuação em Direito Empresarial, consultoria para empresas, questões societárias, governança, negociações e prevenção de conflitos.'
+    },
+  
+    content: {
+      title: 'Direito Empresarial aplicado às decisões do negócio',
+  
+      paragraphs: [
+        'Empresas tomam continuamente decisões que produzem consequências jurídicas. Contratações, reorganizações, negociações, relações entre sócios e definição de responsabilidades são exemplos de situações em que a análise jurídica pode integrar o processo decisório.',
+  
+        'A atuação em Direito Empresarial busca compreender não apenas a norma aplicável, mas também o contexto econômico e operacional em que a decisão será implementada. Essa integração permite identificar riscos e estruturar juridicamente as alternativas disponíveis.',
+  
+        'O acompanhamento preventivo também pode contribuir para reduzir ambiguidades em relações empresariais e identificar potenciais conflitos antes que evoluam para disputas mais complexas.'
+      ],
+  
+      topics: [
+        {
+          title: 'Consultoria jurídica empresarial',
+          text:
+            'A consultoria pode apoiar decisões relacionadas à operação da empresa, estruturação de negócios, responsabilidades, documentos e avaliação preventiva de riscos jurídicos.'
+        },
+        {
+          title: 'Sociedades e relações entre sócios',
+          text:
+            'A definição de direitos, deveres, formas de administração e mecanismos para tratamento de divergências pode ser relevante para a estabilidade das relações societárias.'
+        },
+        {
+          title: 'Governança empresarial',
+          text:
+            'Estruturas de governança contribuem para organizar competências, processos decisórios, responsabilidades e mecanismos internos de controle.'
+        },
+        {
+          title: 'Negociações empresariais',
+          text:
+            'Negociações podem envolver avaliação jurídica de obrigações, riscos, garantias, responsabilidades e consequências das condições discutidas entre as partes.'
+        },
+        {
+          title: 'Prevenção de conflitos',
+          text:
+            'Documentação clara, definição de responsabilidades e análise antecipada de situações potencialmente controversas podem contribuir para relações empresariais mais previsíveis.'
+        }
+      ]
+    }
+  },
+  {
+    slug: 'contratos',
+  
+    title: 'Contratos',
+  
+    summary:
+      'Elaboração, análise, revisão e negociação de contratos, com atenção às obrigações, responsabilidades e riscos das partes.',
+  
+    intro:
+      'Atuação jurídica na elaboração, análise, revisão e negociação de contratos, considerando a operação envolvida, as responsabilidades das partes e os riscos decorrentes da relação contratual.',
+  
+    services: [
+      'Elaboração de contratos',
+      'Revisão contratual',
+      'Negociação de contratos',
+      'Contratos empresariais',
+      'Instrumentos de garantia',
+      'Gestão de riscos contratuais',
+      'Análise de obrigações e responsabilidades',
+      'Prevenção de conflitos contratuais'
+    ],
+  
+    approach:
+      'Os instrumentos são desenvolvidos a partir da realidade da operação, buscando clareza, coerência e previsibilidade jurídica.',
+  
+    seo: {
+      title: 'Contratos e Direito Contratual',
+      description:
+        'Atuação em elaboração, análise, revisão e negociação de contratos empresariais, obrigações, garantias e prevenção de riscos contratuais.'
+    },
+  
+    content: {
+      title: 'Contratos, responsabilidades e prevenção de riscos',
+  
+      paragraphs: [
+        'O contrato transforma uma negociação em direitos, obrigações e responsabilidades juridicamente definidas. Para cumprir adequadamente essa função, o documento precisa refletir a realidade da relação que pretende disciplinar.',
+  
+        'Uma análise contratual adequada considera objeto, prazos, pagamentos, responsabilidades, garantias, hipóteses de descumprimento, formas de encerramento da relação e mecanismos para tratamento de eventuais controvérsias.',
+  
+        'A atuação jurídica pode ocorrer desde a elaboração inicial até a revisão ou negociação de documentos apresentados por outras partes, considerando os interesses envolvidos e os riscos decorrentes das condições propostas.'
+      ],
+  
+      topics: [
+        {
+          title: 'Elaboração de contratos',
+          text:
+            'A elaboração contratual parte da compreensão da operação para transformar as condições negociadas em disposições claras sobre direitos, deveres, prazos e responsabilidades.'
+        },
+        {
+          title: 'Revisão contratual',
+          text:
+            'A revisão permite identificar obrigações, riscos, inconsistências, lacunas e disposições que merecem atenção antes da assinatura ou durante uma relação já existente.'
+        },
+        {
+          title: 'Negociação',
+          text:
+            'A negociação jurídica de contratos pode auxiliar na avaliação das propostas apresentadas e na construção de alternativas compatíveis com os interesses e riscos das partes.'
+        },
+        {
+          title: 'Garantias e inadimplemento',
+          text:
+            'Garantias, penalidades, consequências do descumprimento e mecanismos de cobrança precisam ser avaliados conforme a natureza e os riscos de cada contratação.'
+        },
+        {
+          title: 'Prevenção de conflitos contratuais',
+          text:
+            'Clareza na distribuição de responsabilidades e na definição dos procedimentos aplicáveis a situações futuras pode reduzir ambiguidades e facilitar o tratamento de divergências.'
+        }
+      ]
+    }
+  },
+  {
+    slug: 'contencioso',
+  
+    title: 'Contencioso',
+  
+    summary:
+      'Atuação na análise e condução de conflitos, processos judiciais e procedimentos administrativos.',
+  
+    intro:
+      'Atuação jurídica na condução de conflitos judiciais e administrativos, com análise dos fatos, documentos, fundamentos jurídicos, riscos e alternativas aplicáveis a cada demanda.',
+  
+    services: [
+      'Contencioso cível',
+      'Contencioso empresarial',
+      'Processos administrativos',
+      'Estratégia processual',
+      'Análise de provas e documentos',
+      'Negociação e acordos',
+      'Gestão de carteira',
+      'Acompanhamento processual'
+    ],
+  
+    approach:
+      'Cada demanda é analisada de forma individualizada, considerando fundamentos jurídicos, evidências, riscos e possíveis desdobramentos.',
+  
+    seo: {
+      title: 'Contencioso Judicial e Administrativo',
+      description:
+        'Atuação em contencioso judicial e administrativo, conflitos cíveis e empresariais, estratégia processual, negociação e análise de riscos.'
+    },
+  
+    content: {
+      title: 'Contencioso, estratégia e análise de riscos',
+  
+      paragraphs: [
+        'Quando um conflito já está estabelecido, a atuação jurídica exige compreender os fatos, as provas disponíveis, os fundamentos apresentados pelas partes e os possíveis desdobramentos do processo.',
+  
+        'A estratégia processual não se resume à apresentação de manifestações perante o Judiciário ou órgãos administrativos. Também envolve avaliação de riscos, organização documental, definição de prioridades e análise das alternativas existentes ao longo da controvérsia.',
+  
+        'Dependendo das circunstâncias, a solução pode envolver continuidade do processo, negociação, acordo ou outras medidas juridicamente disponíveis. A escolha depende da análise individual de cada situação.'
+      ],
+  
+      topics: [
+        {
+          title: 'Contencioso cível e empresarial',
+          text:
+            'Conflitos decorrentes de relações civis e empresariais podem envolver obrigações, contratos, responsabilidade, cobranças e outras controvérsias que demandem atuação judicial.'
+        },
+        {
+          title: 'Estratégia processual',
+          text:
+            'A definição da estratégia considera os objetivos envolvidos, os fundamentos jurídicos, as provas existentes, os riscos e as possíveis consequências de cada alternativa.'
+        },
+        {
+          title: 'Provas e documentação',
+          text:
+            'Documentos, comunicações, contratos, registros e outros elementos probatórios podem assumir papel relevante na reconstrução dos fatos e na sustentação das posições apresentadas.'
+        },
+        {
+          title: 'Negociação e acordos',
+          text:
+            'A existência de um processo não impede a avaliação de soluções consensuais. Eventuais propostas devem ser analisadas considerando seus efeitos jurídicos e econômicos.'
+        },
+        {
+          title: 'Processos administrativos',
+          text:
+            'Controvérsias também podem ocorrer perante órgãos e autoridades administrativas, exigindo análise das normas aplicáveis, procedimentos, prazos e documentos pertinentes.'
+        }
+      ]
+    }
+  },
+  {
+    slug: 'consultoria-juridica',
+  
+    title: 'Consultoria Jurídica',
+  
+    summary:
+      'Assessoria jurídica preventiva para análise de riscos, decisões, documentos, procedimentos e questões empresariais.',
+  
+    intro:
+      'Consultoria jurídica voltada à análise preventiva de questões, identificação de riscos e apoio a decisões que exigem interpretação jurídica, estruturação documental ou avaliação de alternativas.',
+  
+    services: [
+      'Pareceres e análises jurídicas',
+      'Consultas jurídicas',
+      'Mapeamento de riscos',
+      'Apoio a decisões',
+      'Revisão de documentos e procedimentos',
+      'Políticas internas',
+      'Prevenção de litígios',
+      'Acompanhamento jurídico preventivo'
+    ],
+  
+    approach:
+      'A consultoria transforma questões jurídicas em informações claras para apoiar decisões responsáveis e documentadas.',
+  
+    seo: {
+      title: 'Consultoria Jurídica',
+      description:
+        'Consultoria jurídica preventiva para empresas e decisões, com análise de riscos, pareceres, documentos, políticas internas e prevenção de conflitos.'
+    },
+  
+    content: {
+      title: 'Consultoria jurídica e atuação preventiva',
+  
+      paragraphs: [
+        'Muitas questões jurídicas podem ser analisadas antes de se transformarem em conflitos. A consultoria preventiva permite avaliar riscos, obrigações e alternativas durante o próprio processo de tomada de decisão.',
+  
+        'A atuação pode envolver desde uma dúvida jurídica específica até o acompanhamento de decisões empresariais, revisão de documentos, elaboração de pareceres ou estruturação de procedimentos internos.',
+  
+        'O objetivo é transformar a análise jurídica em informação compreensível e aplicável ao contexto, permitindo que os responsáveis pela decisão conheçam as consequências jurídicas relevantes antes de definir o caminho a seguir.'
+      ],
+  
+      topics: [
+        {
+          title: 'Análise preventiva de riscos',
+          text:
+            'A identificação antecipada de riscos permite avaliar possíveis consequências jurídicas e considerar medidas de prevenção ou mitigação antes da implementação de uma decisão.'
+        },
+        {
+          title: 'Pareceres e consultas',
+          text:
+            'Questões que exigem interpretação jurídica podem ser examinadas de forma estruturada, considerando legislação, documentos, circunstâncias e entendimentos aplicáveis.'
+        },
+        {
+          title: 'Apoio a decisões empresariais',
+          text:
+            'Decisões comerciais e operacionais podem envolver consequências jurídicas relevantes. A consultoria permite integrar essa dimensão ao processo decisório.'
+        },
+        {
+          title: 'Políticas e procedimentos internos',
+          text:
+            'A estruturação e revisão de políticas internas pode contribuir para definir responsabilidades, procedimentos e parâmetros de atuação dentro das organizações.'
+        },
+        {
+          title: 'Prevenção de litígios',
+          text:
+            'A análise de documentos, relações e situações potencialmente controversas pode permitir ajustes antes que divergências evoluam para disputas administrativas ou judiciais.'
+        }
+      ]
+    }
+  },
+  {
+    slug: 'regulatorio',
+  
+    title: 'Regulatório',
+  
+    summary:
+      'Assessoria jurídica em questões regulatórias, obrigações normativas e impactos da regulação sobre atividades empresariais.',
+  
+    intro:
+      'Atuação jurídica em ambientes regulados, com análise de normas, obrigações, riscos e impactos regulatórios sobre operações, produtos, serviços e decisões empresariais.',
+  
+    services: [
+      'Análise regulatória',
+      'Acompanhamento normativo',
+      'Consultas e pareceres',
+      'Mapeamento de obrigações',
+      'Análise de impactos regulatórios',
+      'Revisão de procedimentos',
+      'Apoio em questões perante órgãos reguladores',
+      'Apoio institucional'
+    ],
+  
+    approach:
+      'O trabalho parte da leitura técnica da regulação e de seus impactos concretos sobre processos, produtos e decisões empresariais.',
+  
+    seo: {
+      title: 'Direito Regulatório',
+      description:
+        'Atuação em Direito Regulatório, análise de normas, obrigações regulatórias, riscos, impactos sobre empresas e acompanhamento normativo.'
+    },
+  
+    content: {
+      title: 'Regulação, obrigações e atividade empresarial',
+  
+      paragraphs: [
+        'Empresas que atuam em setores sujeitos a normas específicas precisam acompanhar não apenas a legislação geral, mas também regras, procedimentos e orientações produzidos por diferentes autoridades e órgãos reguladores.',
+  
+        'Alterações regulatórias podem afetar produtos, serviços, processos internos, contratos e modelos de operação. A análise jurídica permite compreender o alcance dessas mudanças e avaliar seus possíveis impactos sobre a atividade desenvolvida.',
+  
+        'A atuação regulatória também possui caráter preventivo, especialmente na identificação de obrigações e na revisão de procedimentos antes da ocorrência de questionamentos ou controvérsias.'
+      ],
+  
+      topics: [
+        {
+          title: 'Análise de normas e regulação',
+          text:
+            'A interpretação das normas aplicáveis exige considerar seu conteúdo, alcance, contexto regulatório e possíveis efeitos sobre as atividades desenvolvidas.'
+        },
+        {
+          title: 'Mapeamento de obrigações',
+          text:
+            'A identificação organizada das obrigações aplicáveis pode auxiliar empresas na definição de responsabilidades e procedimentos internos relacionados ao cumprimento regulatório.'
+        },
+        {
+          title: 'Mudanças regulatórias',
+          text:
+            'Novas normas e alterações de entendimento podem exigir revisão de procedimentos, documentos, produtos ou estruturas utilizadas pelas organizações.'
+        },
+        {
+          title: 'Riscos regulatórios',
+          text:
+            'A análise preventiva busca identificar situações que possam gerar questionamentos, restrições ou outras consequências decorrentes do ambiente regulatório.'
+        },
+        {
+          title: 'Interação com órgãos reguladores',
+          text:
+            'Demandas envolvendo autoridades e órgãos reguladores podem exigir preparação documental, análise jurídica e acompanhamento dos procedimentos aplicáveis.'
+        }
+      ]
+    }
+  },
   {
     slug: 'direito-digital-lgpd',
   
@@ -118,11 +538,15 @@ export const areas: Area[] = [
   },
   {
     slug: 'direito-imobiliario',
+  
     title: 'Direito Imobiliário',
+  
     summary:
-      'Assessoria jurídica em relações imobiliárias, contratos, locações e questões relacionadas à utilização e proteção de imóveis.',
+      'Assessoria jurídica em contratos imobiliários, locações, inadimplência e questões relacionadas à utilização e proteção de imóveis.',
+  
     intro:
-      'Atuação jurídica em questões imobiliárias que envolvem contratos, locações, direitos e obrigações relacionados à propriedade e à utilização de imóveis.',
+      'Atuação em Direito Imobiliário envolvendo contratos, locações, análise documental, inadimplência e medidas extrajudiciais ou judiciais relacionadas a imóveis.',
+  
     services: [
       'Contratos imobiliários',
       'Locação de imóveis',
@@ -133,8 +557,55 @@ export const areas: Area[] = [
       'Análise documental imobiliária',
       'Consultoria jurídica em questões imobiliárias'
     ],
+  
     approach:
-      'Cada questão imobiliária é analisada a partir da documentação, da relação jurídica existente e dos objetivos envolvidos, com avaliação dos riscos e das medidas extrajudiciais ou judiciais juridicamente disponíveis.'
+      'Cada questão imobiliária é analisada a partir da documentação, da relação jurídica existente e dos objetivos envolvidos, com avaliação dos riscos e das medidas extrajudiciais ou judiciais juridicamente disponíveis.',
+  
+    seo: {
+      title: 'Direito Imobiliário',
+      description:
+        'Atuação em Direito Imobiliário, contratos e locações, inadimplência, despejo, cobrança de aluguéis e análise documental imobiliária.'
+    },
+  
+    content: {
+      title: 'Direito Imobiliário, contratos e relações locatícias',
+  
+      paragraphs: [
+        'Relações imobiliárias envolvem patrimônio, contratos e obrigações que podem produzir efeitos por períodos prolongados. A análise jurídica busca identificar os direitos e responsabilidades envolvidos desde a formação da relação até seu eventual encerramento.',
+  
+        'Nas locações, questões relacionadas a garantias, pagamentos, encargos, conservação, inadimplência e devolução do imóvel podem exigir interpretação conjunta do contrato e da legislação aplicável.',
+  
+        'A atuação pode ser preventiva, mediante análise documental e contratual, ou ocorrer quando já existe uma controvérsia, inclusive em situações que demandem cobrança ou medidas destinadas à retomada do imóvel.'
+      ],
+  
+      topics: [
+        {
+          title: 'Contratos imobiliários',
+          text:
+            'Contratos relacionados a imóveis devem definir adequadamente objeto, condições, obrigações, responsabilidades e consequências do eventual descumprimento.'
+        },
+        {
+          title: 'Locação de imóveis',
+          text:
+            'Relações entre locador e locatário envolvem direitos e deveres previstos no contrato e na legislação, incluindo pagamento, encargos, garantias, conservação e devolução do imóvel.'
+        },
+        {
+          title: 'Inadimplência locatícia',
+          text:
+            'O atraso de aluguéis ou encargos exige análise do contrato, da garantia existente, dos valores envolvidos e das alternativas extrajudiciais ou judiciais disponíveis.'
+        },
+        {
+          title: 'Ação de despejo',
+          text:
+            'A retomada judicial do imóvel depende das hipóteses e procedimentos previstos na legislação. Em determinadas situações podem existir medidas específicas, sujeitas aos requisitos legais e à apreciação judicial.'
+        },
+        {
+          title: 'Análise documental',
+          text:
+            'Documentos relacionados ao imóvel e à relação contratual podem revelar obrigações, restrições ou riscos que precisam ser considerados antes de determinadas decisões.'
+        }
+      ]
+    }
   },
 ];
 
