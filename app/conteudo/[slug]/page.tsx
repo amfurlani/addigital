@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { articles, lawyers } from '@/lib/data';
+import { ArticleNarrator } from '@/components/ArticleNarrator';
 
 export function generateStaticParams() {
   return articles.map((x) => ({
@@ -61,6 +62,13 @@ export default async function Page({
           </div>
         </div>
       </header>
+
+      <div className="container article-content-width">
+        <ArticleNarrator
+          title={a.title}
+          body={a.body}
+        />
+      </div>
 
       {/* PODCAST / LINKEDIN */}
       {a.podcast?.embedUrl && (
