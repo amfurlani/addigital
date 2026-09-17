@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { articles, lawyers, areas } from '@/lib/data';
 import { ArticleNarrator } from '@/components/ArticleNarrator';
 
-const baseUrl = 'https://addigital.adv.br';
+const baseUrl = 'https://addigital.adv.br'; 
 
 /**
  * Converte as datas editoriais usadas no data.ts para ISO 8601.
