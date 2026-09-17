@@ -1,6 +1,21 @@
 export type Area = { slug:string; title:string; summary:string; intro:string; services:string[]; approach:string };
 export type Lawyer = { slug:string; name:string; role:string; oab:string; areas:string[]; education:string[]; bio:string; publications:string[]; image?:string;};
-export type Article = { slug:string; category:string; title:string; excerpt:string; date:string; authorSlug:string; readTime:string; body:string[]; podcast?: { platform: string; url: string; embedUrl?: string; }; };
+export type Article = {
+  slug: string;
+  category: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  authorSlug: string;
+  readTime: string;
+  body: string[];
+  areaSlugs?: string[];
+  podcast?: {
+    platform: string;
+    url: string;
+    embedUrl?: string;
+  };
+};
 
 export const areas: Area[] = [
   { slug:'direito-tributario', title:'Direito Tributário', summary:'Assessoria e atuação em questões tributárias administrativas e judiciais.', intro:'Atuação jurídica em questões tributárias que exigem análise técnica, visão estratégica e compreensão do ambiente empresarial.', services:['Planejamento tributário','Análise de questões fiscais','Consultoria tributária','Recuperação de créditos','Processos administrativos','Processos judiciais','Análise de riscos tributários','Acompanhamento de mudanças legislativas'], approach:'Cada questão tributária é analisada considerando o contexto jurídico, econômico e operacional envolvido, com identificação de riscos, alternativas e caminhos juridicamente adequados.' },
@@ -18,9 +33,9 @@ export const lawyers: Lawyer[] = [
 ];
 
 export const articles: Article[] = [
-  { slug:'reforma-tributaria-principais-pontos-empresas', category:'Tributário', title:'Reforma Tributária: principais pontos para empresas', excerpt:'Uma visão objetiva sobre temas que merecem acompanhamento na adaptação ao novo ambiente tributário.', date:'12 set. 2026', authorSlug:'joao-da-silva', readTime:'6 min', body:['A Reforma Tributária altera de forma relevante a lógica de tributação sobre o consumo e exige atenção das empresas durante o período de transição.','Mais do que acompanhar mudanças legislativas, é importante mapear os impactos sobre contratos, precificação, sistemas, processos internos e relacionamento com fornecedores e clientes.','A avaliação jurídica deve ser integrada às áreas financeira, fiscal e operacional, de modo que as decisões sejam tomadas com base em informações consistentes e atualizadas.','Este conteúdo possui caráter exclusivamente informativo e não constitui aconselhamento jurídico individualizado.'] },
-  { slug:'analise-juridica-preventiva-decisoes-empresariais', category:'Empresarial', title:'Decisões empresariais e a importância da análise jurídica preventiva', excerpt:'Como a leitura antecipada de riscos pode apoiar decisões mais estruturadas.', date:'05 set. 2026', authorSlug:'pedro-almeida', readTime:'5 min', body:['A análise jurídica preventiva busca identificar riscos antes que eles se convertam em conflitos ou custos inesperados.','Em decisões empresariais relevantes, a participação jurídica desde as etapas iniciais pode contribuir para estruturar documentos, responsabilidades e mecanismos de prevenção de controvérsias.','A prevenção não elimina incertezas, mas permite que elas sejam identificadas e tratadas de maneira organizada.','Este conteúdo possui caráter exclusivamente informativo e não constitui aconselhamento jurídico individualizado.'] },
-  { slug:'clausulas-contratuais-atencao-especial', category:'Contratos', title:'Cláusulas contratuais que merecem atenção especial', excerpt:'Pontos que ajudam a tornar a relação contratual mais clara e previsível.', date:'28 ago. 2026', authorSlug:'mariana-souza', readTime:'7 min', body:['Contratos eficientes devem refletir a operação real das partes e distribuir responsabilidades de forma compreensível.','Cláusulas sobre objeto, pagamento, responsabilidade, rescisão, confidencialidade e solução de conflitos costumam merecer atenção especial.','A qualidade de um contrato não depende apenas de sua extensão, mas da clareza com que antecipa situações relevantes para aquela relação.','Este conteúdo possui caráter exclusivamente informativo e não constitui aconselhamento jurídico individualizado.'] },
+  { slug:'reforma-tributaria-principais-pontos-empresas', category:'Tributário', title:'Reforma Tributária: principais pontos para empresas', excerpt:'Uma visão objetiva sobre temas que merecem acompanhamento na adaptação ao novo ambiente tributário.', date:'12 set. 2026', authorSlug:'joao-da-silva', readTime:'6 min', areaSlugs:['direito-tributario'], body:['A Reforma Tributária altera de forma relevante a lógica de tributação sobre o consumo e exige atenção das empresas durante o período de transição.','Mais do que acompanhar mudanças legislativas, é importante mapear os impactos sobre contratos, precificação, sistemas, processos internos e relacionamento com fornecedores e clientes.','A avaliação jurídica deve ser integrada às áreas financeira, fiscal e operacional, de modo que as decisões sejam tomadas com base em informações consistentes e atualizadas.','Este conteúdo possui caráter exclusivamente informativo e não constitui aconselhamento jurídico individualizado.'] },
+  { slug:'analise-juridica-preventiva-decisoes-empresariais', category:'Empresarial', title:'Decisões empresariais e a importância da análise jurídica preventiva', excerpt:'Como a leitura antecipada de riscos pode apoiar decisões mais estruturadas.', date:'05 set. 2026', authorSlug:'pedro-almeida', readTime:'5 min', areaSlugs:['direito-empresarial', 'consultoria-juridica'], body:['A análise jurídica preventiva busca identificar riscos antes que eles se convertam em conflitos ou custos inesperados.','Em decisões empresariais relevantes, a participação jurídica desde as etapas iniciais pode contribuir para estruturar documentos, responsabilidades e mecanismos de prevenção de controvérsias.','A prevenção não elimina incertezas, mas permite que elas sejam identificadas e tratadas de maneira organizada.','Este conteúdo possui caráter exclusivamente informativo e não constitui aconselhamento jurídico individualizado.'] },
+  { slug:'clausulas-contratuais-atencao-especial', category:'Contratos', title:'Cláusulas contratuais que merecem atenção especial', excerpt:'Pontos que ajudam a tornar a relação contratual mais clara e previsível.', date:'28 ago. 2026', authorSlug:'mariana-souza', readTime:'7 min', areaSlugs:['contratos'], body:['Contratos eficientes devem refletir a operação real das partes e distribuir responsabilidades de forma compreensível.','Cláusulas sobre objeto, pagamento, responsabilidade, rescisão, confidencialidade e solução de conflitos costumam merecer atenção especial.','A qualidade de um contrato não depende apenas de sua extensão, mas da clareza com que antecipa situações relevantes para aquela relação.','Este conteúdo possui caráter exclusivamente informativo e não constitui aconselhamento jurídico individualizado.'] },
   {
   slug: 'feminicidio-o-que-a-lei-precisa-ver',
   category: 'Direito Penal',
@@ -158,7 +173,7 @@ export const articles: Article[] = [
   excerpt: 'Uma análise sobre a inadimplência na locação de imóveis, a ação de despejo e os instrumentos jurídicos disponíveis ao locador para a retomada do imóvel.',
   date: '23 abr. 2023',
   authorSlug: 'adilson-furlani',
-  readTime: '18 min',
+  readTime: '18 min', areaSlugs: ['contratos'],
   body: [
     'Introdução',
     '    A inadimplência em contratos de locação pode gerar dificuldades relevantes para o proprietário do imóvel, especialmente quando os aluguéis e outros encargos permanecem em atraso e o locatário continua ocupando o bem. Nessas situações, é importante compreender quais medidas podem ser adotadas para cobrança dos valores e eventual retomada do imóvel.',
