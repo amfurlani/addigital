@@ -1,4 +1,25 @@
-export type Area = { slug:string; title:string; summary:string; intro:string; services:string[]; approach:string };
+export type Area = {
+  slug: string;
+  title: string;
+  summary: string;
+  intro: string;
+  services: string[];
+  approach: string;
+
+  seo?: {
+    title: string;
+    description: string;
+  };
+
+  content?: {
+    title: string;
+    paragraphs: string[];
+    topics?: {
+      title: string;
+      text: string;
+    }[];
+  };
+};
 export type Lawyer = { slug:string; name:string; role:string; oab:string; areas:string[]; education:string[]; bio:string; publications:string[]; image?:string;};
 export type Article = {
   slug: string;
@@ -26,11 +47,15 @@ export const areas: Area[] = [
   { slug:'regulatorio', title:'Regulatório', summary:'Apoio jurídico em temas regulatórios e ambientes normativos complexos.', intro:'Assessoria em ambientes regulados, com acompanhamento de normas, riscos e obrigações aplicáveis às operações.', services:['Análise regulatória','Acompanhamento normativo','Consultas e pareceres','Mapeamento de obrigações','Apoio institucional'], approach:'O trabalho parte da leitura técnica da regulação e de seus impactos concretos sobre processos, produtos e decisões empresariais.' },
   {
     slug: 'direito-digital-lgpd',
+  
     title: 'Direito Digital e LGPD',
+  
     summary:
-      'Assessoria jurídica em questões relacionadas à tecnologia, proteção de dados, privacidade e relações no ambiente digital.',
+      'Assessoria jurídica em proteção de dados, privacidade, tecnologia e relações no ambiente digital.',
+  
     intro:
-      'Atuação jurídica em questões que envolvem tecnologia, proteção de dados pessoais, privacidade e utilização de recursos digitais, considerando os impactos jurídicos das novas formas de interação, trabalho e negócio.',
+      'Atuação jurídica em Direito Digital e proteção de dados pessoais, com análise de questões relacionadas à LGPD, privacidade, tecnologia, contratos e utilização de recursos digitais por empresas e pessoas.',
+  
     services: [
       'Adequação e orientação sobre LGPD',
       'Privacidade e proteção de dados pessoais',
@@ -41,8 +66,55 @@ export const areas: Area[] = [
       'Monitoramento e privacidade no ambiente de trabalho',
       'Análise de riscos jurídicos relacionados à tecnologia'
     ],
+  
     approach:
-      'A atuação combina análise jurídica e compreensão técnica do ambiente digital, buscando identificar riscos, responsabilidades e alternativas juridicamente adequadas para o tratamento de questões relacionadas à tecnologia, privacidade e proteção de dados.'
+      'A atuação combina análise jurídica e compreensão técnica do ambiente digital, buscando identificar riscos, responsabilidades e alternativas juridicamente adequadas para questões relacionadas à tecnologia, privacidade e proteção de dados.',
+  
+    seo: {
+      title: 'Direito Digital e LGPD',
+      description:
+        'Atuação em Direito Digital e LGPD, proteção de dados pessoais, privacidade, contratos digitais e questões jurídicas relacionadas à tecnologia.'
+    },
+  
+    content: {
+      title: 'Direito Digital, privacidade e proteção de dados',
+  
+      paragraphs: [
+        'A transformação digital ampliou a quantidade de dados tratados por empresas e tornou mais frequentes situações em que tecnologia, privacidade e responsabilidade jurídica precisam ser analisadas conjuntamente.',
+  
+        'A Lei Geral de Proteção de Dados Pessoais (LGPD) estabelece princípios, direitos e obrigações relacionados ao tratamento de dados pessoais. Sua aplicação pode alcançar diferentes atividades empresariais, incluindo relações com clientes, trabalhadores, fornecedores, parceiros comerciais e usuários de serviços digitais.',
+  
+        'A análise jurídica nesse campo não se limita à elaboração de documentos. É necessário compreender quais dados são tratados, para quais finalidades, quem participa das operações, quais riscos estão envolvidos e quais medidas jurídicas e organizacionais são adequadas ao contexto.'
+      ],
+  
+      topics: [
+        {
+          title: 'LGPD e proteção de dados pessoais',
+          text:
+            'Questões relacionadas à LGPD podem envolver identificação das atividades de tratamento de dados, análise de bases legais, direitos dos titulares, compartilhamento de informações, retenção de dados, segurança e definição de responsabilidades.'
+        },
+        {
+          title: 'Privacidade no ambiente digital',
+          text:
+            'O uso de plataformas, sistemas, aplicativos e ferramentas digitais pode produzir questões relacionadas à coleta de informações, transparência, monitoramento, rastreamento e utilização de dados pessoais.'
+        },
+        {
+          title: 'Empresas e governança de dados',
+          text:
+            'A proteção de dados também integra processos de governança. Políticas internas, definição de responsabilidades, revisão de procedimentos e análise de fornecedores podem contribuir para uma utilização mais organizada e juridicamente fundamentada das informações.'
+        },
+        {
+          title: 'Relações de trabalho e monitoramento',
+          text:
+            'Ferramentas de monitoramento, trabalho remoto, equipamentos corporativos e sistemas de controle podem envolver simultaneamente poder diretivo, privacidade e proteção de dados. A análise deve considerar finalidade, necessidade, transparência e proporcionalidade conforme as circunstâncias.'
+        },
+        {
+          title: 'Contratos e tecnologia',
+          text:
+            'Contratos relacionados a tecnologia e tratamento de dados podem exigir definição de responsabilidades, regras sobre confidencialidade, segurança da informação, compartilhamento de dados e obrigações das partes.'
+        }
+      ]
+    }
   },
   {
     slug: 'direito-imobiliario',
