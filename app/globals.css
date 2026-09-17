@@ -1337,3 +1337,72 @@ blockquote p {
     gap: 14px;
   }
 }
+
+
+/* ============================================================
+   ÁREAS DE ATUAÇÃO — CONTEÚDO EDITORIAL
+   ============================================================ */
+
+.area-editorial {
+  position: relative;
+}
+
+.area-editorial > .container > h2 {
+  max-width: 700px;
+  margin-top: 10px;
+  margin-bottom: 28px;
+}
+
+.area-editorial-intro {
+  max-width: 760px;
+}
+
+.area-editorial-intro p {
+  margin: 0 0 18px;
+
+  color: var(--text-muted);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.area-topics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+
+  margin-top: 42px;
+}
+
+.area-topic {
+  padding: 24px;
+
+  background: var(--graphite);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--gold-main);
+  border-radius: 5px;
+}
+
+.area-topic h3 {
+  margin: 0 0 10px;
+
+  color: var(--gold-light);
+  font-size: 18px;
+}
+
+.area-topic p {
+  margin: 0;
+
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+@media (max-width: 700px) {
+  .area-topics {
+    grid-template-columns: 1fr;
+  }
+
+  .area-topic {
+    padding: 20px;
+  }
+}
