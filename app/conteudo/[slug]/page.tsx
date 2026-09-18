@@ -153,12 +153,25 @@ export async function generateMetadata({
       authors: author
         ? [`${baseUrl}/equipe/${author.slug}`]
         : undefined,
+      images: a.image
+        ? [
+            {
+              url: `${baseUrl}${a.image}`,
+              width: 1200,
+              height: 630,
+              alt: a.title,
+            },
+          ]
+        : undefined,
     },
 
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title: a.title,
       description: a.excerpt,
+      images: a.image
+        ? [`${baseUrl}${a.image}`]
+        : undefined,
     },
 
     robots: {
@@ -226,6 +239,10 @@ export default async function Page({
       name: 'AD Advocacia Digital',
       url: baseUrl,
     },
+
+    image: a.image
+      ? `${baseUrl}${a.image}`
+      : undefined,
 
     inLanguage: 'pt-BR',
   };
