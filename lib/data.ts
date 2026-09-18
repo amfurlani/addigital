@@ -31,6 +31,7 @@ export type Article = {
   readTime: string;
   body: string[];
   areaSlugs?: string[];
+  image?: string;
   podcast?: {
     platform: string;
     url: string;
@@ -681,7 +682,7 @@ export const articles: Article[] = [
       title: 'Produtividade vs. Privacidade - A Guerra Silenciosa do Home Office',
       excerpt: 'O caso do Itaú revela um conflito entre monitoramento digital e privacidade no home office. A legislação permite a fiscalização do trabalho remoto, mas impõe limites relacionados à transparência, finalidade, proporcionalidade e proteção de dados.',
       date: '10 set. 2025',
-      authorSlug: 'adilson-furlani',
+      authorSlug: 'adilson-furlani',image: '/conteudo/produtividade-vs-privacidade-home-office.jpg',
       readTime: '14 min',areaSlugs: ['direito-digital-lgpd'],
       podcast: {
         platform: 'LinkedIn',
