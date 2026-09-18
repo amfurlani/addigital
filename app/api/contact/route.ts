@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+//const resend = new Resend(process.env.RESEND_API_KEY);
 
 const CONTACT_EMAIL = 'a.furlani+adv@gmail.com';
 const PRODUCTION_ORIGIN = 'https://addigital.adv.br';
@@ -67,6 +67,8 @@ export async function POST(req: Request) {
         { status: 500 }
       );
     }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     /*
      * 2. Aceitamos somente JSON.
