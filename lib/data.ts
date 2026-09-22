@@ -631,7 +631,7 @@ export const articles: Article[] = [
       'Como objeto, preço, alocação de riscos, responsabilidade, rescisão, confidencialidade, proteção de dados e solução de conflitos transformam contratos em instrumentos de prevenção e governança.',
     date: '18 ago. 2026',
     authorSlugs: ['daniela-pinheiros','adilson-furlani'],
-    readTime: '18 min', image: '/conteudo/Contato_Estrategico.jpg',
+    readTime: '18 min', image: '/conteudo/Contrato_Estrategico.jpg',
     areaSlugs: [
       'contratos',
       'direito-empresarial',
