@@ -620,8 +620,8 @@ export const lawyers: Lawyer[] = [
 ];
 
 export const articles: Article[] = [
-  { slug:'reforma-tributaria-principais-pontos-empresas', category:'Tributário', title:'Reforma Tributária: principais pontos para empresas', excerpt:'Uma visão objetiva sobre temas que merecem acompanhamento na adaptação ao novo ambiente tributário.', date:'12 set. 2026', authorSlug:'pedro-almeida', readTime:'6 min', areaSlugs:['direito-tributario'], body:['A Reforma Tributária altera de forma relevante a lógica de tributação sobre o consumo e exige atenção das empresas durante o período de transição.','Mais do que acompanhar mudanças legislativas, é importante mapear os impactos sobre contratos, precificação, sistemas, processos internos e relacionamento com fornecedores e clientes.','A avaliação jurídica deve ser integrada às áreas financeira, fiscal e operacional, de modo que as decisões sejam tomadas com base em informações consistentes e atualizadas.','Este conteúdo possui caráter exclusivamente informativo e não constitui aconselhamento jurídico individualizado.'] },
-  { slug:'analise-juridica-preventiva-decisoes-empresariais', category:'Empresarial', title:'Decisões empresariais e a importância da análise jurídica preventiva', excerpt:'Como a leitura antecipada de riscos pode apoiar decisões mais estruturadas.', date:'05 set. 2026', authorSlug:'pedro-almeida', readTime:'5 min', areaSlugs:['direito-empresarial', 'consultoria-juridica'], body:['A análise jurídica preventiva busca identificar riscos antes que eles se convertam em conflitos ou custos inesperados.','Em decisões empresariais relevantes, a participação jurídica desde as etapas iniciais pode contribuir para estruturar documentos, responsabilidades e mecanismos de prevenção de controvérsias.','A prevenção não elimina incertezas, mas permite que elas sejam identificadas e tratadas de maneira organizada.','Este conteúdo possui caráter exclusivamente informativo e não constitui aconselhamento jurídico individualizado.'] },
+  { slug:'reforma-tributaria-principais-pontos-empresas', category:'Tributário', title:'Reforma Tributária: principais pontos para empresas', excerpt:'Uma visão objetiva sobre temas que merecem acompanhamento na adaptação ao novo ambiente tributário.', date:'12 set. 2026', authorSlugs: ['pedro-almeida'], ['pedro-almeida'], readTime:'6 min', areaSlugs:['direito-tributario'], body:['A Reforma Tributária altera de forma relevante a lógica de tributação sobre o consumo e exige atenção das empresas durante o período de transição.','Mais do que acompanhar mudanças legislativas, é importante mapear os impactos sobre contratos, precificação, sistemas, processos internos e relacionamento com fornecedores e clientes.','A avaliação jurídica deve ser integrada às áreas financeira, fiscal e operacional, de modo que as decisões sejam tomadas com base em informações consistentes e atualizadas.','Este conteúdo possui caráter exclusivamente informativo e não constitui aconselhamento jurídico individualizado.'] },
+  { slug:'analise-juridica-preventiva-decisoes-empresariais', category:'Empresarial', title:'Decisões empresariais e a importância da análise jurídica preventiva', excerpt:'Como a leitura antecipada de riscos pode apoiar decisões mais estruturadas.', date:'05 set. 2026', authorSlugs: ['pedro-almeida'], ['pedro-almeida'], readTime:'5 min', areaSlugs:['direito-empresarial', 'consultoria-juridica'], body:['A análise jurídica preventiva busca identificar riscos antes que eles se convertam em conflitos ou custos inesperados.','Em decisões empresariais relevantes, a participação jurídica desde as etapas iniciais pode contribuir para estruturar documentos, responsabilidades e mecanismos de prevenção de controvérsias.','A prevenção não elimina incertezas, mas permite que elas sejam identificadas e tratadas de maneira organizada.','Este conteúdo possui caráter exclusivamente informativo e não constitui aconselhamento jurídico individualizado.'] },
   {
     slug: 'clausulas-contratuais-atencao-especial',
     category: 'Contratos',
@@ -630,7 +630,7 @@ export const articles: Article[] = [
     excerpt:
       'Como objeto, preço, alocação de riscos, responsabilidade, rescisão, confidencialidade, proteção de dados e solução de conflitos transformam contratos em instrumentos de prevenção e governança.',
     date: '18 ago. 2026',
-    authorSlugs: ['daniela-pinheiros','adilson-furlani'],
+    authorSlugs: ['pedro-almeida'], ['daniela-pinheiros','adilson-furlani'],
     readTime: '18 min',
     areaSlugs: [
       'contratos',
@@ -745,7 +745,7 @@ export const articles: Article[] = [
   title: 'Feminicídio: o que a lei precisa ver',
   excerpt: 'Uma análise sobre a distinção entre lesão corporal e tentativa de feminicídio, examinando a intenção do agressor, o contexto da violência de gênero e os elementos utilizados pelo Direito para identificar a vontade de matar.',
   date: '12 ago. 2025',
-  authorSlugs: ['daniela-pinheiros'],
+  authorSlugs: ['pedro-almeida'], ['daniela-pinheiros'],
   readTime: '15 min',
   body: [
     'Introdução: O Espelho da Violência em Espaços Confinados',
@@ -801,7 +801,7 @@ export const articles: Article[] = [
       title: 'Produtividade vs. Privacidade - A Guerra Silenciosa do Home Office',
       excerpt: 'O caso do Itaú revela um conflito entre monitoramento digital e privacidade no home office. A legislação permite a fiscalização do trabalho remoto, mas impõe limites relacionados à transparência, finalidade, proporcionalidade e proteção de dados.',
       date: '10 set. 2025',
-      authorSlugs: ['adilson-furlani'],image: '/conteudo/produtividade-vs-privacidade-home-office.jpg',
+      authorSlugs: ['pedro-almeida'], ['adilson-furlani'],image: '/conteudo/produtividade-vs-privacidade-home-office.jpg',
       readTime: '14 min',areaSlugs: ['direito-digital-lgpd'],
       podcast: {
         platform: 'LinkedIn',
