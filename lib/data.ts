@@ -27,7 +27,7 @@ export type Article = {
   title: string;
   excerpt: string;
   date: string;
-  authorSlug: string;
+  authorSlugs: string[];
   readTime: string;
   body: string[];
   areaSlugs?: string[];
@@ -630,7 +630,7 @@ export const articles: Article[] = [
     excerpt:
       'Como objeto, preço, alocação de riscos, responsabilidade, rescisão, confidencialidade, proteção de dados e solução de conflitos transformam contratos em instrumentos de prevenção e governança.',
     date: '18 ago. 2026',
-    authorSlug: 'daniela-pinheiros',
+    authorSlugs: ['daniela-pinheiros','adilson-furlani'],
     readTime: '18 min',
     areaSlugs: [
       'contratos',
@@ -745,7 +745,7 @@ export const articles: Article[] = [
   title: 'Feminicídio: o que a lei precisa ver',
   excerpt: 'Uma análise sobre a distinção entre lesão corporal e tentativa de feminicídio, examinando a intenção do agressor, o contexto da violência de gênero e os elementos utilizados pelo Direito para identificar a vontade de matar.',
   date: '12 ago. 2025',
-  authorSlug: 'daniela-pinheiros',
+  authorSlugs: ['daniela-pinheiros'],
   readTime: '15 min',
   body: [
     'Introdução: O Espelho da Violência em Espaços Confinados',
@@ -801,7 +801,7 @@ export const articles: Article[] = [
       title: 'Produtividade vs. Privacidade - A Guerra Silenciosa do Home Office',
       excerpt: 'O caso do Itaú revela um conflito entre monitoramento digital e privacidade no home office. A legislação permite a fiscalização do trabalho remoto, mas impõe limites relacionados à transparência, finalidade, proporcionalidade e proteção de dados.',
       date: '10 set. 2025',
-      authorSlug: 'adilson-furlani',image: '/conteudo/produtividade-vs-privacidade-home-office.jpg',
+      authorSlugs: ['adilson-furlani'],image: '/conteudo/produtividade-vs-privacidade-home-office.jpg',
       readTime: '14 min',areaSlugs: ['direito-digital-lgpd'],
       podcast: {
         platform: 'LinkedIn',
@@ -875,7 +875,7 @@ export const articles: Article[] = [
   title: 'Inadimplência no contrato de aluguel - Como reaver o imóvel de forma rápida',
   excerpt: 'Uma análise sobre a inadimplência na locação de imóveis, a ação de despejo e os instrumentos jurídicos disponíveis ao locador para a retomada do imóvel.',
   date: '23 abr. 2023',
-  authorSlug: 'adilson-furlani',
+  authorSlugs: ['adilson-furlani'],
   readTime: '18 min', areaSlugs: ['direito-imobiliario', 'contratos'],
   body: [
     'Introdução',
@@ -949,7 +949,7 @@ export const articles: Article[] = [
   title: 'Educar os filhos fora da escola: é crime ou não?',
   excerpt: 'Análise sobre educação domiciliar, direito à educação e situações excepcionais envolvendo crianças com transtornos psicológicos que dificultam ou impedem a frequência escolar.',
   date: '11 abr. 2023',
-  authorSlug: 'adilson-furlani',
+  authorSlugs: ['adilson-furlani'],
   readTime: '10 min',
   body: [
     'Introdução',
