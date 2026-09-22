@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { articles, lawyers, areas } from '@/lib/data';
 import { ArticleNarrator } from '@/components/ArticleNarrator';
 
-const baseUrl = 'https://addigital.adv.br'; 
+const baseUrl = 'https://addigital.adv.br';
 
 /**
  * Converte as datas editoriais usadas no data.ts para ISO 8601.
@@ -15,9 +15,6 @@ const baseUrl = 'https://addigital.adv.br';
  * "10 set. 2025 às 17:55"    -> "2025-09-10T17:55:00-03:00"
  * "10/09/2025"               -> "2025-09-10T12:00:00-03:00"
  * "10/09/2025 às 17:55"      -> "2025-09-10T17:55:00-03:00"
- *
- * Mantemos suporte ao formato numérico para compatibilidade
- * com conteúdos antigos.
  */
 function toIsoDate(date: string) {
   const months: Record<string, string> = {
@@ -39,11 +36,6 @@ function toIsoDate(date: string) {
     .trim()
     .toLowerCase();
 
-  /*
-   * Formato editorial:
-   * 10 set. 2025
-   * 10 set. 2025 às 17:55
-   */
   const editorialMatch = normalizedDate.match(
     /^(\d{1,2})\s+([a-zç]{3})\.?\s+(\d{4})(?:\s+às\s+(\d{1,2}):(\d{2}))?$/
   );
@@ -70,11 +62,6 @@ function toIsoDate(date: string) {
     )}:${minute}:00-03:00`;
   }
 
-  /*
-   * Formato numérico legado:
-   * 10/09/2025
-   * 10/09/2025 às 17:55
-   */
   const numericMatch = normalizedDate.match(
     /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+às\s+(\d{1,2}):(\d{2}))?$/
   );
@@ -98,9 +85,33 @@ function toIsoDate(date: string) {
   return undefined;
 }
 
+function getArticleAuthors(authorSlugs: string[]) {
+  return authorSlugs
+    .map((slug) =>
+      lawyers.find((lawyer) => lawyer.slug === slug)
+    )
+    .filter(
+      (lawyer): lawyer is (typeof lawyers)[number] =>
+        Boolean(lawyer)
+    );
+}
+
+function isArticleHeading(text: string) {
+  return (
+    text === 'Introdução' ||
+    text === 'Conclusão' ||
+    text === 'Referências Bibliográficas' ||
+    text === 'Referências e fontes' ||
+    text === 'Referências e fontes do artigo original' ||
+    text.startsWith('Introdução:') ||
+    text.startsWith('Conclusão:') ||
+    /^\d+(\.\d+)*\.\s/.test(text)
+  );
+}
+
 export function generateStaticParams() {
-  return articles.map((x) => ({
-    slug: x.slug,
+  return articles.map((article) => ({
+    slug: article.slug,
   }));
 }
 
@@ -111,55 +122,67 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
 
-  const a = articles.find((x) => x.slug === slug);
+  const article = articles.find(
+    (item) => item.slug === slug
+  );
 
-  if (!a) {
+  if (!article) {
     return {
       title: 'Conteúdo',
     };
   }
 
-  const author = lawyers.find((x) => x.slug === a.authorSlug);
+  const authors = getArticleAuthors(
+    article.authorSlugs
+  );
 
-  const articleUrl = `${baseUrl}/conteudo/${a.slug}`;
-  const publishedTime = toIsoDate(a.date);
+  const articleUrl =
+    `${baseUrl}/conteudo/${article.slug}`;
+
+  const publishedTime =
+    toIsoDate(article.date);
 
   return {
-    title: a.title,
+    title: article.title,
 
-    description: a.excerpt,
+    description: article.excerpt,
 
     alternates: {
       canonical: articleUrl,
     },
 
-    authors: author
-      ? [
-          {
+    authors:
+      authors.length > 0
+        ? authors.map((author) => ({
             name: author.name,
             url: `${baseUrl}/equipe/${author.slug}`,
-          },
-        ]
-      : undefined,
+          }))
+        : undefined,
 
     openGraph: {
       type: 'article',
       locale: 'pt_BR',
       url: articleUrl,
       siteName: 'AD Advocacia Digital',
-      title: a.title,
-      description: a.excerpt,
+      title: article.title,
+      description: article.excerpt,
       publishedTime,
-      authors: author
-        ? [`${baseUrl}/equipe/${author.slug}`]
-        : undefined,
-      images: a.image
+
+      authors:
+        authors.length > 0
+          ? authors.map(
+              (author) =>
+                `${baseUrl}/equipe/${author.slug}`
+            )
+          : undefined,
+
+      images: article.image
         ? [
             {
-              url: `${baseUrl}${a.image}`,
+              url: `${baseUrl}${article.image}`,
               width: 1200,
               height: 630,
-              alt: a.title,
+              alt: article.title,
             },
           ]
         : undefined,
@@ -167,10 +190,10 @@ export async function generateMetadata({
 
     twitter: {
       card: 'summary_large_image',
-      title: a.title,
-      description: a.excerpt,
-      images: a.image
-        ? [`${baseUrl}${a.image}`]
+      title: article.title,
+      description: article.excerpt,
+      images: article.image
+        ? [`${baseUrl}${article.image}`]
         : undefined,
     },
 
@@ -192,31 +215,33 @@ export default async function Page({
 }) {
   const { slug } = await params;
 
-  const a = articles.find((x) => x.slug === slug);
+  const article = articles.find(
+    (item) => item.slug === slug
+  );
 
-  if (!a) notFound();
+  if (!article) {
+    notFound();
+  }
 
-  const author = lawyers.find((x) => x.slug === a.authorSlug);
+  const authors = getArticleAuthors(
+    article.authorSlugs
+  );
 
-  const articleUrl = `${baseUrl}/conteudo/${a.slug}`;
-  const publishedTime = toIsoDate(a.date);
+  const articleUrl =
+    `${baseUrl}/conteudo/${article.slug}`;
 
-  /*
-   * Dados estruturados para Google.
-   *
-   * Não adicionamos "image" neste momento porque os artigos
-   * ainda não possuem uma imagem editorial própria cadastrada.
-   * É melhor omitir do que usar uma imagem que não represente
-   * especificamente o conteúdo.
-   */
+  const publishedTime =
+    toIsoDate(article.date);
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
 
-    headline: a.title,
-    description: a.excerpt,
+    headline: article.title,
+    description: article.excerpt,
 
     url: articleUrl,
+
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': articleUrl,
@@ -226,12 +251,12 @@ export default async function Page({
       datePublished: publishedTime,
     }),
 
-    ...(author && {
-      author: {
+    ...(authors.length > 0 && {
+      author: authors.map((author) => ({
         '@type': 'Person',
         name: author.name,
         url: `${baseUrl}/equipe/${author.slug}`,
-      },
+      })),
     }),
 
     publisher: {
@@ -240,8 +265,8 @@ export default async function Page({
       url: baseUrl,
     },
 
-    image: a.image
-      ? `${baseUrl}${a.image}`
+    image: article.image
+      ? `${baseUrl}${article.image}`
       : undefined,
 
     inLanguage: 'pt-BR',
@@ -249,60 +274,71 @@ export default async function Page({
 
   return (
     <article>
-
       {/* DADOS ESTRUTURADOS — GOOGLE */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+          __html: JSON.stringify(jsonLd).replace(
+            /</g,
+            '\\u003c'
+          ),
         }}
       />
 
-      {/* CABEÇALHO DO ARTIGO */}
+      {/* CABEÇALHO */}
       <header className="article-hero">
         <div className="container narrow">
-          <span className="eyebrow">{a.category}</span>
+          <span className="eyebrow">
+            {article.category}
+          </span>
 
-          <h1>{a.title}</h1>
+          <h1>{article.title}</h1>
 
-          <p>{a.excerpt}</p>
+          <p>{article.excerpt}</p>
 
           <div className="article-meta">
-            <span>{a.date}</span>
+            <span>{article.date}</span>
 
-            <span>{a.readTime} de leitura</span>
+            <span>
+              {article.readTime} de leitura
+            </span>
 
-            {author && (
-              <Link href={`/equipe/${author.slug}`}>
+            {authors.map((author) => (
+              <Link
+                key={author.slug}
+                href={`/equipe/${author.slug}`}
+              >
                 {author.name}
               </Link>
-            )}
+            ))}
           </div>
         </div>
       </header>
 
       {/* PODCAST / LINKEDIN */}
-      {a.podcast?.embedUrl && (
+      {article.podcast?.embedUrl && (
         <div className="container article-content-width">
           <section className="article-podcast">
-
             <div className="article-podcast-header">
               <span className="podcast-eyebrow">
                 NOSSO PODCAST - DEEP DIVE
               </span>
 
-              <h2>Prefere ouvir este debate em nosso Podcast?</h2>
+              <h2>
+                Prefere ouvir este debate em nosso Podcast?
+              </h2>
 
               <p>
-                Confira o debate deste artigo publicado em nosso Podcast
-                &quot;Deep Dive&quot; no LinkedIn.
+                Confira o debate deste artigo publicado
+                em nosso Podcast &quot;Deep Dive&quot;
+                no LinkedIn.
               </p>
             </div>
 
             <div className="linkedin-embed">
               <iframe
-                src={a.podcast.embedUrl}
-                title={`Podcast: ${a.title}`}
+                src={article.podcast.embedUrl}
+                title={`Podcast: ${article.title}`}
                 width="504"
                 height="399"
                 frameBorder="0"
@@ -310,7 +346,6 @@ export default async function Page({
                 loading="lazy"
               />
             </div>
-
           </section>
         </div>
       )}
@@ -318,161 +353,187 @@ export default async function Page({
       {/* NARRADOR */}
       <div className="container article-content-width">
         <ArticleNarrator
-          title={a.title}
-          body={a.body}
+          title={article.title}
+          body={article.body}
         />
       </div>
 
-      {/* TEXTO DO ARTIGO */}
+      {/* TEXTO */}
       <div className="container article-body article-content-width">
-        {a.body.map((p, i) => {
-          const isHeading =
-            p === 'Introdução' ||
-            p === 'Conclusão' ||
-            p === 'Referências Bibliográficas' ||
-            p === 'Referências e fontes do artigo original' ||
-            p.startsWith('Introdução:') ||
-            p.startsWith('Conclusão:') ||
-            /^\d+(\.\d+)*\.\s/.test(p);
-
-          if (isHeading) {
-            return <h2 key={i}>{p}</h2>;
+        {article.body.map((paragraph, index) => {
+          if (isArticleHeading(paragraph)) {
+            return (
+              <h2 key={index}>
+                {paragraph}
+              </h2>
+            );
           }
 
           const isLastParagraph =
-            !a.body
-              .slice(i + 1)
-              .some((item) => {
-                const nextIsHeading =
-                  item === 'Introdução' ||
-                  item === 'Conclusão' ||
-                  item === 'Referências Bibliográficas' ||
-                  item === 'Referências e fontes do artigo original' ||
-                  item.startsWith('Introdução:') ||
-                  item.startsWith('Conclusão:') ||
-                  /^\d+(\.\d+)*\.\s/.test(item);
+            !article.body
+              .slice(index + 1)
+              .some(
+                (item) =>
+                  !isArticleHeading(item)
+              );
 
-                return !nextIsHeading;
-              });
+          const urlRegex =
+            /(https?:\/\/[^\s]+)/g;
 
-          const urlRegex = /(https?:\/\/[^\s]+)/g;
-          const parts = p.split(urlRegex);
+          const parts =
+            paragraph.split(urlRegex);
 
           return (
             <p
-              key={i}
-              className={isLastParagraph ? 'article-closing' : undefined}
+              key={index}
+              className={
+                isLastParagraph
+                  ? 'article-closing'
+                  : undefined
+              }
             >
-              {parts.map((part, partIndex) => {
-                if (/^https?:\/\//.test(part)) {
-                  return (
-                    <a
-                      key={partIndex}
-                      href={part}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="article-url"
-                    >
-                      {part}
-                    </a>
-                  );
-                }
+              {parts.map(
+                (part, partIndex) => {
+                  if (
+                    /^https?:\/\//.test(part)
+                  ) {
+                    return (
+                      <a
+                        key={partIndex}
+                        href={part}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="article-url"
+                      >
+                        {part}
+                      </a>
+                    );
+                  }
 
-                return part;
-              })}
+                  return part;
+                }
+              )}
             </p>
           );
         })}
       </div>
 
-      {/* ÁREAS DE ATUAÇÃO RELACIONADAS */}
-      {a.areaSlugs && a.areaSlugs.length > 0 && (
-        <section className="section article-related-areas">
-          <div className="container article-content-width">
-
-            <span className="eyebrow">
-              ÁREAS RELACIONADAS
-            </span>
-
-            <h2>
-              Atuação relacionada a este conteúdo
-            </h2>
-
-            <div className="article-related-areas-list">
-              {a.areaSlugs.map((areaSlug) => {
-                const relatedArea = areas.find(
-                  (area) => area.slug === areaSlug
-                );
-
-                if (!relatedArea) return null;
-
-                return (
-                  <Link
-                    key={relatedArea.slug}
-                    href={`/areas-de-atuacao/${relatedArea.slug}`}
-                    className="article-related-area"
-                  >
-                    <div>
-                      <strong>{relatedArea.title}</strong>
-                      <p>{relatedArea.summary}</p>
-                    </div>
-
-                    <span className="text-link">
-                      Conheça a atuação →
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-
-          </div>
-        </section>
-      )}
-
-      {/* AUTOR */}
-      {author && (
-        <section className="section surface">
-          <div className="container narrow author-box">
-
-            {author.image ? (
-              <Image
-                src={author.image}
-                alt={author.name}
-                width={110}
-                height={110}
-                className="author-photo"
-              />
-            ) : (
-              <div className="avatar">
-                {author.name
-                  .split(' ')
-                  .slice(0, 2)
-                  .map((x) => x[0])
-                  .join('')}
-              </div>
-            )}
-
-            <div>
+      {/* ÁREAS RELACIONADAS */}
+      {article.areaSlugs &&
+        article.areaSlugs.length > 0 && (
+          <section className="section article-related-areas">
+            <div className="container article-content-width">
               <span className="eyebrow">
-                SOBRE O AUTOR
+                ÁREAS RELACIONADAS
               </span>
 
-              <h3>{author.name}</h3>
+              <h2>
+                Atuação relacionada a este conteúdo
+              </h2>
 
-              <p>{author.bio}</p>
+              <div className="article-related-areas-list">
+                {article.areaSlugs.map(
+                  (areaSlug) => {
+                    const relatedArea =
+                      areas.find(
+                        (area) =>
+                          area.slug ===
+                          areaSlug
+                      );
 
-              <Link
-                className="text-link"
-                href={`/equipe/${author.slug}`}
-              >
-                Ver perfil
-              </Link>
+                    if (!relatedArea) {
+                      return null;
+                    }
+
+                    return (
+                      <Link
+                        key={
+                          relatedArea.slug
+                        }
+                        href={`/areas-de-atuacao/${relatedArea.slug}`}
+                        className="article-related-area"
+                      >
+                        <div>
+                          <strong>
+                            {
+                              relatedArea.title
+                            }
+                          </strong>
+
+                          <p>
+                            {
+                              relatedArea.summary
+                            }
+                          </p>
+                        </div>
+
+                        <span className="text-link">
+                          Conheça a atuação →
+                        </span>
+                      </Link>
+                    );
+                  }
+                )}
+              </div>
             </div>
+          </section>
+        )}
 
+      {/* AUTORES */}
+      {authors.length > 0 && (
+        <section className="section surface">
+          <div className="container narrow">
+            <span className="eyebrow">
+              {authors.length === 1
+                ? 'SOBRE O AUTOR'
+                : 'SOBRE OS AUTORES'}
+            </span>
+
+            <div className="article-authors">
+              {authors.map((author) => (
+                <div
+                  className="author-box"
+                  key={author.slug}
+                >
+                  {author.image ? (
+                    <Image
+                      src={author.image}
+                      alt={author.name}
+                      width={110}
+                      height={110}
+                      className="author-photo"
+                    />
+                  ) : (
+                    <div className="avatar">
+                      {author.name
+                        .split(' ')
+                        .slice(0, 2)
+                        .map(
+                          (part) =>
+                            part[0]
+                        )
+                        .join('')}
+                    </div>
+                  )}
+
+                  <div>
+                    <h3>{author.name}</h3>
+
+                    <p>{author.bio}</p>
+
+                    <Link
+                      className="text-link"
+                      href={`/equipe/${author.slug}`}
+                    >
+                      Ver perfil
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}
-
     </article>
   );
 }
