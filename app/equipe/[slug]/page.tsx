@@ -84,9 +84,14 @@ export default async function Page({
 
   if (!person) notFound();
 
+  /*
+   * Um artigo pode possuir um ou mais autores.
+   * Por isso, verificamos se o profissional atual
+   * está presente no array authorSlugs.
+   */
   const publications = articles.filter(
     (article) =>
-      article.authorSlug === person.slug
+      article.authorSlugs.includes(person.slug)
   );
 
   const profileUrl =
@@ -94,10 +99,6 @@ export default async function Page({
 
   /*
    * Dados estruturados do perfil profissional.
-   *
-   * Neste momento não incluímos credenciais profissionais
-   * adicionais além das informações que já estão efetivamente
-   * cadastradas no site.
    */
   const personJsonLd = {
     '@context': 'https://schema.org',
@@ -173,7 +174,11 @@ export default async function Page({
       />
 
       <PageHero
-        eyebrow={`${person.role} · ${person.oab}`}
+        eyebrow={
+          person.oab
+            ? `${person.role} · ${person.oab}`
+            : person.role
+        }
         title={person.name}
         text={person.areas.join(' · ')}
       />
@@ -242,7 +247,7 @@ export default async function Page({
                 <h2>Publicações</h2>
 
                 <p className="profile-publications-intro">
-                  Artigos e análises publicados por{' '}
+                  Artigos e análises com participação de{' '}
                   {person.name}.
                 </p>
 
