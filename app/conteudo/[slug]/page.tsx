@@ -315,6 +315,23 @@ export default async function Page({
         </div>
       </header>
 
+      {/* IMAGEM EDITORIAL */}
+      {article.image && (
+        <div className="container article-content-width">
+          <figure className="article-featured-image">
+            <Image
+              src={article.image}
+              alt={article.title}
+              width={1200}
+              height={630}
+              sizes="(max-width: 768px) 100vw, 1200px"
+              className="article-featured-image-img"
+              priority
+            />
+          </figure>
+        </div>
+      )}
+
       {/* PODCAST / LINKEDIN */}
       {article.podcast?.embedUrl && (
         <div className="container article-content-width">
