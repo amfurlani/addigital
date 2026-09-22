@@ -745,7 +745,7 @@ export const articles: Article[] = [
   title: 'Feminicídio: o que a lei precisa ver',
   excerpt: 'Uma análise sobre a distinção entre lesão corporal e tentativa de feminicídio, examinando a intenção do agressor, o contexto da violência de gênero e os elementos utilizados pelo Direito para identificar a vontade de matar.',
   date: '12 ago. 2025',
-  authorSlugs: ['pedro-almeida'], ['daniela-pinheiros'],
+  authorSlugs: ['daniela-pinheiros'],
   readTime: '15 min',
   body: [
     'Introdução: O Espelho da Violência em Espaços Confinados',
@@ -801,7 +801,7 @@ export const articles: Article[] = [
       title: 'Produtividade vs. Privacidade - A Guerra Silenciosa do Home Office',
       excerpt: 'O caso do Itaú revela um conflito entre monitoramento digital e privacidade no home office. A legislação permite a fiscalização do trabalho remoto, mas impõe limites relacionados à transparência, finalidade, proporcionalidade e proteção de dados.',
       date: '10 set. 2025',
-      authorSlugs: ['pedro-almeida'], ['adilson-furlani'],image: '/conteudo/produtividade-vs-privacidade-home-office.jpg',
+      authorSlugs: ['adilson-furlani'], image: '/conteudo/produtividade-vs-privacidade-home-office.jpg',
       readTime: '14 min',areaSlugs: ['direito-digital-lgpd'],
       podcast: {
         platform: 'LinkedIn',
