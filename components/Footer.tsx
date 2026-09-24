@@ -20,7 +20,7 @@ export function Footer() {
 
           <p>
             Estratégia jurídica, conhecimento e tecnologia para decisões
-            empresariais mais seguras.
+            mais seguras.
           </p>
         </div>
 
