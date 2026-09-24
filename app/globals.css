@@ -1788,3 +1788,51 @@ blockquote p {
   aspect-ratio: 1200 / 630;
   object-fit: cover;
 }
+
+
+.article-narrator-options {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.narrator-option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.narrator-option span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.narrator-option select {
+  min-height: 38px;
+  padding: 0 2rem 0 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .article-narrator-options {
+    width: 100%;
+  }
+
+  .narrator-option:first-child {
+    flex: 1;
+  }
+
+  .narrator-option:first-child select {
+    width: 100%;
+  }
+}
