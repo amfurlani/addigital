@@ -356,10 +356,11 @@ export default async function Page({
               <iframe
                 src={article.podcast.embedUrl}
                 title={`Podcast: ${article.title}`}
+                width="504"
+                height="399"
                 frameBorder="0"
                 allowFullScreen
                 loading="lazy"
-                scrolling="no"
               />
             </div>
           </section>
