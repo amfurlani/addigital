@@ -380,12 +380,16 @@ export default async function Page({
         {article.body.map((paragraph, index) => {
           if (isArticleHeading(paragraph)) {
             return (
-              <h2 key={index}>
+              <h2
+                key={index}
+                data-narration-index={index}
+                className="article-narration-block"
+              >
                 {paragraph}
               </h2>
             );
           }
-
+      
           const isLastParagraph =
             !article.body
               .slice(index + 1)
@@ -393,21 +397,25 @@ export default async function Page({
                 (item) =>
                   !isArticleHeading(item)
               );
-
+      
           const urlRegex =
             /(https?:\/\/[^\s]+)/g;
-
+      
           const parts =
             paragraph.split(urlRegex);
-
+      
           return (
             <p
               key={index}
-              className={
+              data-narration-index={index}
+              className={[
+                'article-narration-block',
                 isLastParagraph
                   ? 'article-closing'
-                  : undefined
-              }
+                  : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
             >
               {parts.map(
                 (part, partIndex) => {
@@ -426,7 +434,7 @@ export default async function Page({
                       </a>
                     );
                   }
-
+      
                   return part;
                 }
               )}
