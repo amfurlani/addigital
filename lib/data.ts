@@ -638,6 +638,12 @@ export const articles: Article[] = [
       'consultoria-juridica',
       'direito-digital-lgpd'
     ],
+    podcast: {
+      platform: 'LinkedIn',
+      url: 'https://www.linkedin.com/feed/update/urn:li:activity:7508947912215920640',
+      embedUrl:
+        'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7508947912215920640?compact=1',
+    },
     body: [
       '    Todo contrato nasce, em alguma medida, em ambiente de confiança. Seja no fechamento de uma rodada de investimentos, na contratação de uma plataforma em nuvem, na compra de um imóvel, na formalização de um acordo entre sócios ou no planejamento patrimonial de uma família empresária, a assinatura representa uma convergência de expectativas.',
       '    A ilusão perigosa é acreditar que o documento serve apenas para registrar as intenções existentes quando tudo está funcionando bem.',
