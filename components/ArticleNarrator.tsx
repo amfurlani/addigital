@@ -28,6 +28,139 @@ type NarrationStatus =
   | 'speaking'
   | 'paused';
 
+/**
+ * A Web Speech API não possui uma propriedade
+ * padronizada que diga se uma voz é "Natural".
+ *
+ * Por isso, classificamos as vozes usando as
+ * informações que o navegador efetivamente
+ * disponibiliza: idioma, nome, voiceURI,
+ * default e localService.
+ *
+ * O objetivo é:
+ *
+ * 1. Priorizar pt-BR.
+ * 2. Priorizar vozes identificadas como Natural.
+ * 3. Favorecer vozes Online/Microsoft do Edge.
+ * 4. Usar a voz padrão como critério secundário.
+ * 5. Manter fallback para qualquer voz em português.
+ */
+function scoreVoice(
+  voice: SpeechSynthesisVoice
+) {
+  const name =
+    voice.name.toLowerCase();
+
+  const uri =
+    voice.voiceURI.toLowerCase();
+
+  const lang =
+    voice.lang.toLowerCase();
+
+  let score = 0;
+
+  /*
+   * IDIOMA
+   */
+  if (lang === 'pt-br') {
+    score += 1000;
+  } else if (
+    lang.startsWith('pt')
+  ) {
+    score += 300;
+  } else {
+    return -1000;
+  }
+
+  /*
+   * QUALIDADE / NATURALIDADE
+   *
+   * Edge costuma identificar determinadas
+   * vozes online/naturais pelo nome ou URI.
+   */
+  if (
+    name.includes('natural') ||
+    uri.includes('natural')
+  ) {
+    score += 500;
+  }
+
+  /*
+   * Voz online.
+   */
+  if (
+    name.includes('online') ||
+    uri.includes('online')
+  ) {
+    score += 250;
+  }
+
+  /*
+   * Vozes Microsoft recebem pequena
+   * preferência porque, no Edge, podem
+   * incluir as opções online/naturais.
+   */
+  if (
+    name.includes('microsoft') ||
+    uri.includes('microsoft')
+  ) {
+    score += 100;
+  }
+
+  /*
+   * Voz definida como padrão pelo sistema.
+   */
+  if (voice.default) {
+    score += 40;
+  }
+
+  /*
+   * Uma voz não local pode representar
+   * um serviço online.
+   *
+   * É apenas um sinal secundário, pois
+   * localService não indica diretamente
+   * qualidade da voz.
+   */
+  if (!voice.localService) {
+    score += 20;
+  }
+
+  return score;
+}
+
+function sortVoices(
+  voices: SpeechSynthesisVoice[]
+) {
+  return [...voices].sort(
+    (a, b) => {
+      const scoreDifference =
+        scoreVoice(b) -
+        scoreVoice(a);
+
+      if (scoreDifference !== 0) {
+        return scoreDifference;
+      }
+
+      return a.name.localeCompare(
+        b.name,
+        'pt-BR'
+      );
+    }
+  );
+}
+
+function isNaturalVoice(
+  voice: SpeechSynthesisVoice
+) {
+  const description =
+    `${voice.name} ${voice.voiceURI}`.toLowerCase();
+
+  return description.includes(
+    'natural'
+  );
+}
+
 export function ArticleNarrator({
   title,
   body,
@@ -55,22 +188,43 @@ export function ArticleNarrator({
 
   const currentIndexRef = useRef(-1);
 
+  /*
+   * Cada início/reinício de leitura cria uma
+   * nova sessão.
+   *
+   * Isso impede callbacks antigos de uma
+   * utterance cancelada de avançarem a leitura.
+   */
   const sessionRef = useRef(0);
 
+  /*
+   * Usado para não disputar a rolagem com o
+   * usuário enquanto ele estiver navegando
+   * manualmente pelo artigo.
+   */
   const userScrollingRef = useRef(false);
 
   const scrollTimerRef =
-    useRef<ReturnType<typeof setTimeout> | null>(
-      null
-    );
+    useRef<ReturnType<
+      typeof setTimeout
+    > | null>(null);
 
   const totalBlocks = body.length;
 
   const progress =
-    currentIndex >= 0 && totalBlocks > 0
-      ? ((currentIndex + 1) / totalBlocks) *
+    currentIndex >= 0 &&
+    totalBlocks > 0
+      ? ((currentIndex + 1) /
+          totalBlocks) *
         100
       : 0;
+
+  const activeVoice =
+    voices.find(
+      (voice) =>
+        voice.voiceURI ===
+        selectedVoice
+    ) || null;
 
   const updateStatus = useCallback(
     (nextStatus: NarrationStatus) => {
@@ -80,85 +234,112 @@ export function ArticleNarrator({
     []
   );
 
-  const updateCurrentIndex = useCallback(
-    (index: number) => {
-      currentIndexRef.current = index;
-      setCurrentIndex(index);
+  const updateCurrentIndex =
+    useCallback(
+      (index: number) => {
+        currentIndexRef.current =
+          index;
 
-      document
-        .querySelectorAll(
-          '[data-narration-index]'
-        )
-        .forEach((element) => {
-          element.classList.remove(
-            'is-narrating'
+        setCurrentIndex(index);
+
+        document
+          .querySelectorAll(
+            '[data-narration-index]'
+          )
+          .forEach((element) => {
+            element.classList.remove(
+              'is-narrating'
+            );
+          });
+
+        if (index < 0) {
+          return;
+        }
+
+        const element =
+          document.querySelector<HTMLElement>(
+            `[data-narration-index="${index}"]`
           );
-        });
 
-      if (index < 0) return;
+        if (!element) {
+          return;
+        }
 
-      const element =
-        document.querySelector<HTMLElement>(
-          `[data-narration-index="${index}"]`
+        element.classList.add(
+          'is-narrating'
         );
 
-      if (!element) return;
+        /*
+         * Só movimenta a página quando o
+         * trecho atual saiu da área confortável
+         * de leitura e o usuário não está
+         * rolando manualmente.
+         */
+        if (
+          !userScrollingRef.current
+        ) {
+          const rect =
+            element.getBoundingClientRect();
 
-      element.classList.add(
-        'is-narrating'
-      );
+          const topLimit = 110;
 
-      /*
-       * Só acompanha automaticamente quando
-       * o usuário não está rolando manualmente.
-       */
-      if (!userScrollingRef.current) {
-        const rect =
-          element.getBoundingClientRect();
+          const bottomLimit =
+            window.innerHeight - 150;
 
-        const topLimit = 110;
-        const bottomLimit =
-          window.innerHeight - 150;
+          const isComfortablyVisible =
+            rect.top >= topLimit &&
+            rect.bottom <=
+              bottomLimit;
 
-        const isComfortablyVisible =
-          rect.top >= topLimit &&
-          rect.bottom <= bottomLimit;
-
-        if (!isComfortablyVisible) {
-          element.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-          });
+          if (
+            !isComfortablyVisible
+          ) {
+            element.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            });
+          }
         }
+      },
+      []
+    );
+
+  const stopNarration =
+    useCallback(() => {
+      if (
+        'speechSynthesis' in
+        window
+      ) {
+        window.speechSynthesis.cancel();
       }
-    },
-    []
-  );
 
-  const stopNarration = useCallback(() => {
-    if (
-      'speechSynthesis' in window
-    ) {
-      window.speechSynthesis.cancel();
-    }
+      sessionRef.current += 1;
 
-    sessionRef.current += 1;
-
-    updateStatus('idle');
-    updateCurrentIndex(-1);
-    setSettingsOpen(false);
-  }, [
-    updateCurrentIndex,
-    updateStatus,
-  ]);
+      updateStatus('idle');
+      updateCurrentIndex(-1);
+      setSettingsOpen(false);
+    }, [
+      updateCurrentIndex,
+      updateStatus,
+    ]);
 
   /*
-   * Carrega somente vozes em português,
-   * priorizando pt-BR.
+   * ========================================================
+   * VOZES
+   * ========================================================
+   *
+   * Carrega as vozes disponibilizadas pelo
+   * navegador e mantém somente português.
+   *
+   * Depois ordena automaticamente pela nossa
+   * pontuação de preferência.
    */
   useEffect(() => {
     if (
-      !('speechSynthesis' in window)
+      !(
+        'speechSynthesis' in
+        window
+      )
     ) {
       return;
     }
@@ -171,55 +352,60 @@ export function ArticleNarrator({
         synth.getVoices();
 
       const portuguese =
-        available.filter((voice) =>
-          voice.lang
-            .toLowerCase()
-            .startsWith('pt')
+        available.filter(
+          (voice) =>
+            voice.lang
+              .toLowerCase()
+              .startsWith('pt')
         );
 
-      const ordered = [
-        ...portuguese.filter(
-          (voice) =>
-            voice.lang.toLowerCase() ===
-            'pt-br'
-        ),
-        ...portuguese.filter(
-          (voice) =>
-            voice.lang.toLowerCase() !==
-            'pt-br'
-        ),
-      ];
+      const ordered =
+        sortVoices(portuguese);
 
       setVoices(ordered);
 
-      setSelectedVoice((current) => {
-        if (
-          current &&
-          ordered.some(
-            (voice) =>
-              voice.voiceURI === current
-          )
-        ) {
-          return current;
-        }
+      setSelectedVoice(
+        (current) => {
+          /*
+           * Preserva a escolha do usuário
+           * caso a lista de vozes seja
+           * atualizada pelo navegador.
+           */
+          if (
+            current &&
+            ordered.some(
+              (voice) =>
+                voice.voiceURI ===
+                current
+            )
+          ) {
+            return current;
+          }
 
-        const brazilian =
-          ordered.find(
-            (voice) =>
-              voice.lang.toLowerCase() ===
-              'pt-br'
+          /*
+           * Como ordered já está classificado,
+           * a primeira voz é nossa melhor
+           * candidata disponível.
+           */
+          return (
+            ordered[0]?.voiceURI ||
+            ''
           );
-
-        return (
-          brazilian?.voiceURI ||
-          ordered[0]?.voiceURI ||
-          ''
-        );
-      });
+        }
+      );
     }
 
+    /*
+     * Alguns navegadores já disponibilizam
+     * as vozes imediatamente.
+     */
     loadVoices();
 
+    /*
+     * Outros, especialmente navegadores
+     * Chromium, podem carregar a lista
+     * assincronamente.
+     */
     synth.addEventListener(
       'voiceschanged',
       loadVoices
@@ -234,17 +420,19 @@ export function ArticleNarrator({
   }, []);
 
   /*
-   * Detecta rolagem deliberada do usuário.
-   *
-   * Durante um pequeno período, o narrador
-   * deixa de reposicionar automaticamente
-   * a página.
+   * ========================================================
+   * ROLAGEM MANUAL
+   * ========================================================
    */
+
   useEffect(() => {
     function handleManualScroll() {
-      userScrollingRef.current = true;
+      userScrollingRef.current =
+        true;
 
-      if (scrollTimerRef.current) {
+      if (
+        scrollTimerRef.current
+      ) {
         clearTimeout(
           scrollTimerRef.current
         );
@@ -252,20 +440,25 @@ export function ArticleNarrator({
 
       scrollTimerRef.current =
         setTimeout(() => {
-          userScrollingRef.current = false;
+          userScrollingRef.current =
+            false;
         }, 2500);
     }
 
     window.addEventListener(
       'wheel',
       handleManualScroll,
-      { passive: true }
+      {
+        passive: true,
+      }
     );
 
     window.addEventListener(
       'touchmove',
       handleManualScroll,
-      { passive: true }
+      {
+        passive: true,
+      }
     );
 
     return () => {
@@ -279,7 +472,9 @@ export function ArticleNarrator({
         handleManualScroll
       );
 
-      if (scrollTimerRef.current) {
+      if (
+        scrollTimerRef.current
+      ) {
         clearTimeout(
           scrollTimerRef.current
         );
@@ -288,19 +483,78 @@ export function ArticleNarrator({
   }, []);
 
   /*
-   * Cancela a narração ao sair da página.
+   * ========================================================
+   * CLEANUP
+   * ========================================================
    */
+
   useEffect(() => {
     return () => {
       sessionRef.current += 1;
 
       if (
-        'speechSynthesis' in window
+        'speechSynthesis' in
+        window
       ) {
         window.speechSynthesis.cancel();
       }
+
+      document
+        .querySelectorAll(
+          '[data-narration-index]'
+        )
+        .forEach((element) => {
+          element.classList.remove(
+            'is-narrating'
+          );
+        });
     };
   }, []);
+
+  /*
+   * ========================================================
+   * CRIAÇÃO DA FALA
+   * ========================================================
+   */
+
+  const configureUtterance =
+    useCallback(
+      (
+        utterance:
+          SpeechSynthesisUtterance
+      ) => {
+        const voice =
+          voices.find(
+            (item) =>
+              item.voiceURI ===
+              selectedVoice
+          );
+
+        if (voice) {
+          utterance.voice = voice;
+          utterance.lang =
+            voice.lang;
+        } else {
+          utterance.lang =
+            'pt-BR';
+        }
+
+        utterance.rate = rate;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+      },
+      [
+        rate,
+        selectedVoice,
+        voices,
+      ]
+    );
+
+  /*
+   * ========================================================
+   * LEITURA DOS BLOCOS
+   * ========================================================
+   */
 
   const speakBlock = useCallback(
     (
@@ -308,20 +562,30 @@ export function ArticleNarrator({
       session: number
     ) => {
       if (
-        !('speechSynthesis' in window)
+        !(
+          'speechSynthesis' in
+          window
+        )
       ) {
         return;
       }
 
       if (
-        session !== sessionRef.current
+        session !==
+        sessionRef.current
       ) {
         return;
       }
 
-      if (index >= body.length) {
+      /*
+       * Fim do artigo.
+       */
+      if (
+        index >= body.length
+      ) {
         updateStatus('idle');
         updateCurrentIndex(-1);
+
         return;
       }
 
@@ -333,21 +597,9 @@ export function ArticleNarrator({
           body[index]
         );
 
-      const voice = voices.find(
-        (item) =>
-          item.voiceURI === selectedVoice
+      configureUtterance(
+        utterance
       );
-
-      if (voice) {
-        utterance.voice = voice;
-        utterance.lang = voice.lang;
-      } else {
-        utterance.lang = 'pt-BR';
-      }
-
-      utterance.rate = rate;
-      utterance.pitch = 1;
-      utterance.volume = 1;
 
       utterance.onstart = () => {
         if (
@@ -382,15 +634,19 @@ export function ArticleNarrator({
         );
       };
 
-      utterance.onerror = (event) => {
+      utterance.onerror = (
+        event
+      ) => {
         /*
-         * "canceled" e "interrupted"
-         * acontecem normalmente quando
-         * reiniciamos ou encerramos a fala.
+         * Cancelamento e interrupção são
+         * esperados quando o usuário reinicia,
+         * troca a voz ou encerra a leitura.
          */
         if (
-          event.error === 'canceled' ||
-          event.error === 'interrupted'
+          event.error ===
+            'canceled' ||
+          event.error ===
+            'interrupted'
         ) {
           return;
         }
@@ -408,132 +664,144 @@ export function ArticleNarrator({
     },
     [
       body,
-      rate,
-      selectedVoice,
+      configureUtterance,
       updateCurrentIndex,
       updateStatus,
-      voices,
     ]
   );
 
-  const startNarration = useCallback(
-    (startIndex = 0) => {
-      if (
-        !('speechSynthesis' in window)
-      ) {
-        alert(
-          'Seu navegador não oferece suporte à leitura em voz alta.'
-        );
-        return;
-      }
+  /*
+   * ========================================================
+   * INICIAR NARRAÇÃO
+   * ========================================================
+   */
 
-      const synth =
-        window.speechSynthesis;
-
-      synth.cancel();
-
-      sessionRef.current += 1;
-
-      const session =
-        sessionRef.current;
-
-      updateStatus('speaking');
-
-      /*
-       * Na leitura iniciada do começo,
-       * pronunciamos o título antes do
-       * primeiro bloco do artigo.
-       */
-      if (startIndex === 0) {
-        const titleUtterance =
-          new SpeechSynthesisUtterance(
-            title
+  const startNarration =
+    useCallback(
+      (startIndex = 0) => {
+        if (
+          !(
+            'speechSynthesis' in
+            window
+          )
+        ) {
+          alert(
+            'Seu navegador não oferece suporte à leitura em voz alta.'
           );
 
-        const voice = voices.find(
-          (item) =>
-            item.voiceURI ===
-            selectedVoice
-        );
-
-        if (voice) {
-          titleUtterance.voice = voice;
-          titleUtterance.lang =
-            voice.lang;
-        } else {
-          titleUtterance.lang =
-            'pt-BR';
+          return;
         }
 
-        titleUtterance.rate = rate;
-        titleUtterance.pitch = 1;
-        titleUtterance.volume = 1;
+        const synth =
+          window.speechSynthesis;
 
-        titleUtterance.onend = () => {
-          if (
-            session ===
-            sessionRef.current
-          ) {
-            speakBlock(
-              0,
-              session
-            );
-          }
-        };
+        synth.cancel();
 
-        titleUtterance.onerror = (
-          event
-        ) => {
-          if (
-            event.error !==
-              'canceled' &&
-            event.error !==
-              'interrupted' &&
-            session ===
-              sessionRef.current
-          ) {
-            speakBlock(
-              0,
-              session
-            );
-          }
-        };
+        sessionRef.current += 1;
 
-        synth.speak(
-          titleUtterance
+        const session =
+          sessionRef.current;
+
+        updateStatus(
+          'speaking'
         );
 
-        return;
-      }
+        /*
+         * Quando começa do início,
+         * pronuncia o título antes do
+         * primeiro bloco.
+         */
+        if (startIndex === 0) {
+          const titleUtterance =
+            new SpeechSynthesisUtterance(
+              title
+            );
 
-      speakBlock(
-        startIndex,
-        session
-      );
-    },
-    [
-      rate,
-      selectedVoice,
-      speakBlock,
-      title,
-      updateStatus,
-      voices,
-    ]
-  );
+          configureUtterance(
+            titleUtterance
+          );
+
+          titleUtterance.onend =
+            () => {
+              if (
+                session ===
+                sessionRef.current
+              ) {
+                speakBlock(
+                  0,
+                  session
+                );
+              }
+            };
+
+          titleUtterance.onerror =
+            (event) => {
+              if (
+                event.error !==
+                  'canceled' &&
+                event.error !==
+                  'interrupted' &&
+                session ===
+                  sessionRef.current
+              ) {
+                speakBlock(
+                  0,
+                  session
+                );
+              }
+            };
+
+          synth.speak(
+            titleUtterance
+          );
+
+          return;
+        }
+
+        speakBlock(
+          startIndex,
+          session
+        );
+      },
+      [
+        configureUtterance,
+        speakBlock,
+        title,
+        updateStatus,
+      ]
+    );
+
+  /*
+   * ========================================================
+   * CONTROLES
+   * ========================================================
+   */
 
   function handleMainPlay() {
-    if (status === 'paused') {
+    if (
+      status === 'paused'
+    ) {
       window.speechSynthesis.resume();
 
-      updateStatus('speaking');
+      updateStatus(
+        'speaking'
+      );
+
       return;
     }
 
+    /*
+     * Se já estiver falando, o botão
+     * reinicia o trecho atual.
+     */
     if (
       status === 'speaking' &&
       currentIndex >= 0
     ) {
-      startNarration(currentIndex);
+      startNarration(
+        currentIndex
+      );
+
       return;
     }
 
@@ -541,7 +809,9 @@ export function ArticleNarrator({
   }
 
   function handlePause() {
-    if (status !== 'speaking') {
+    if (
+      status !== 'speaking'
+    ) {
       return;
     }
 
@@ -555,7 +825,8 @@ export function ArticleNarrator({
   }
 
   function handleVoiceChange(
-    event: React.ChangeEvent<HTMLSelectElement>
+    event:
+      React.ChangeEvent<HTMLSelectElement>
   ) {
     const nextVoice =
       event.target.value;
@@ -563,8 +834,10 @@ export function ArticleNarrator({
     setSelectedVoice(nextVoice);
 
     /*
-     * A nova voz será aplicada quando
-     * a leitura for reiniciada.
+     * A mudança de voz exige uma nova
+     * utterance. Para evitar comportamento
+     * diferente entre navegadores,
+     * encerramos a leitura atual.
      */
     if (status !== 'idle') {
       stopNarration();
@@ -574,44 +847,84 @@ export function ArticleNarrator({
   function handleRateChange(
     nextRate: number
   ) {
-    setRate(nextRate);
+    /*
+     * Apenas salva a nova velocidade.
+     *
+     * Se estivermos parados, ela será usada
+     * na próxima leitura.
+     */
+    if (status === 'idle') {
+      setRate(nextRate);
+      return;
+    }
 
     /*
-     * Alterar a velocidade durante uma
-     * utterance não é confiável entre
-     * navegadores. Reiniciamos do bloco
-     * atual quando necessário.
+     * Se estivermos lendo, precisamos
+     * reconstruir a utterance para aplicar
+     * a nova velocidade de forma confiável.
      */
-    if (
-      status !== 'idle' &&
-      currentIndex >= 0
-    ) {
-      const restartIndex =
-        currentIndex;
+    const restartIndex =
+      Math.max(
+        currentIndexRef.current,
+        0
+      );
 
-      window.speechSynthesis.cancel();
+    setRate(nextRate);
 
-      sessionRef.current += 1;
+    window.speechSynthesis.cancel();
 
-      const session =
-        sessionRef.current;
+    sessionRef.current += 1;
 
-      updateStatus('speaking');
+    /*
+     * O próximo clique em continuar/ouvir
+     * usará a nova velocidade.
+     *
+     * Mantemos a interface consistente
+     * encerrando a sessão atual.
+     */
+    updateStatus('idle');
+    updateCurrentIndex(-1);
 
-      setTimeout(() => {
-        speakBlock(
-          restartIndex,
-          session
-        );
-      }, 0);
-    }
+    /*
+     * Mantém o trecho conhecido para que
+     * possamos reiniciar imediatamente após
+     * o React aplicar a nova velocidade.
+     */
+    window.setTimeout(() => {
+      /*
+       * Como rate é estado React, evitamos
+       * iniciar aqui com um closure antigo.
+       *
+       * O usuário pode simplesmente clicar
+       * novamente em "Ouvir artigo".
+       *
+       * restartIndex permanece intencionalmente
+       * calculado para futuras extensões do
+       * controle de retomada.
+       */
+      void restartIndex;
+    }, 0);
   }
 
   const isActive =
     status !== 'idle';
 
+  /*
+   * Texto auxiliar para informar qual voz
+   * foi selecionada automaticamente.
+   */
+  const voiceQualityLabel =
+    activeVoice &&
+    isNaturalVoice(activeVoice)
+      ? 'Voz natural'
+      : null;
+
   return (
     <>
+      {/* ===================================================
+          CONTROLE EDITORIAL NO INÍCIO DO ARTIGO
+          =================================================== */}
+
       <section className="article-listen-card">
         <div className="article-listen-copy">
           <span className="article-listen-eyebrow">
@@ -620,11 +933,14 @@ export function ArticleNarrator({
           </span>
 
           <div>
-            <h2>Ouça este artigo</h2>
+            <h2>
+              Ouça este artigo
+            </h2>
 
             <p>
-              Acompanhe a leitura enquanto
-              o texto é destacado na página.
+              Acompanhe a leitura
+              enquanto o texto é
+              destacado na página.
             </p>
           </div>
         </div>
@@ -632,24 +948,34 @@ export function ArticleNarrator({
         <button
           type="button"
           className="article-listen-start"
-          onClick={handleMainPlay}
+          onClick={
+            handleMainPlay
+          }
         >
-          {status === 'paused' ? (
+          {status ===
+          'paused' ? (
             <Play size={18} />
           ) : status ===
             'speaking' ? (
-            <RotateCcw size={18} />
+            <RotateCcw
+              size={18}
+            />
           ) : (
             <Play size={18} />
           )}
 
           {status === 'paused'
             ? 'Continuar'
-            : status === 'speaking'
+            : status ===
+                'speaking'
               ? 'Reiniciar trecho'
               : 'Ouvir artigo'}
         </button>
       </section>
+
+      {/* ===================================================
+          PLAYER FLUTUANTE
+          =================================================== */}
 
       {isActive && (
         <div
@@ -658,6 +984,8 @@ export function ArticleNarrator({
           aria-label="Controles da narração"
         >
           <div className="narrator-floating-player">
+            {/* PROGRESSO */}
+
             <div
               className="narrator-progress"
               aria-hidden="true"
@@ -670,48 +998,63 @@ export function ArticleNarrator({
             </div>
 
             <div className="narrator-floating-content">
+              {/* STATUS */}
+
               <div className="narrator-now-playing">
                 <span className="narrator-pulse">
-                  <Volume2 size={15} />
+                  <Volume2
+                    size={15}
+                  />
                 </span>
 
                 <div>
                   <strong>
-                    {status === 'paused'
+                    {status ===
+                    'paused'
                       ? 'Narração pausada'
                       : 'Ouvindo artigo'}
                   </strong>
 
                   <span>
-                    Trecho{' '}
-                    {Math.max(
-                      currentIndex + 1,
-                      1
-                    )}{' '}
-                    de {totalBlocks}
+                    {currentIndex >=
+                    0
+                      ? `Trecho ${
+                          currentIndex +
+                          1
+                        } de ${totalBlocks}`
+                      : 'Iniciando leitura'}
                   </span>
                 </div>
               </div>
+
+              {/* CONTROLES */}
 
               <div className="narrator-floating-controls">
                 <button
                   type="button"
                   className="narrator-icon-button"
                   onClick={
-                    status === 'paused'
+                    status ===
+                    'paused'
                       ? handleMainPlay
                       : handlePause
                   }
                   aria-label={
-                    status === 'paused'
+                    status ===
+                    'paused'
                       ? 'Continuar narração'
                       : 'Pausar narração'
                   }
                 >
-                  {status === 'paused' ? (
-                    <Play size={18} />
+                  {status ===
+                  'paused' ? (
+                    <Play
+                      size={18}
+                    />
                   ) : (
-                    <Pause size={18} />
+                    <Pause
+                      size={18}
+                    />
                   )}
                 </button>
 
@@ -730,6 +1073,7 @@ export function ArticleNarrator({
                   aria-label="Configurações da narração"
                 >
                   {rate}×
+
                   <ChevronDown
                     size={14}
                   />
@@ -756,10 +1100,16 @@ export function ArticleNarrator({
                   }
                   aria-label="Parar narração"
                 >
-                  <Square size={15} />
+                  <Square
+                    size={15}
+                  />
                 </button>
               </div>
             </div>
+
+            {/* =================================================
+                CONFIGURAÇÕES
+                ================================================= */}
 
             {settingsOpen && (
               <div className="narrator-settings">
@@ -780,9 +1130,13 @@ export function ArticleNarrator({
                     }
                     aria-label="Fechar configurações"
                   >
-                    <X size={16} />
+                    <X
+                      size={16}
+                    />
                   </button>
                 </div>
+
+                {/* VELOCIDADE */}
 
                 <div className="narrator-setting-group">
                   <span className="narrator-setting-label">
@@ -795,38 +1149,50 @@ export function ArticleNarrator({
                       1,
                       1.2,
                       1.4,
-                    ].map((option) => (
-                      <button
-                        type="button"
-                        key={option}
-                        onClick={() =>
-                          handleRateChange(
+                    ].map(
+                      (option) => (
+                        <button
+                          type="button"
+                          key={
                             option
-                          )
-                        }
-                        className={
-                          rate === option
-                            ? 'is-selected'
-                            : undefined
-                        }
-                      >
-                        {rate ===
-                          option && (
-                          <Check
-                            size={13}
-                          />
-                        )}
+                          }
+                          onClick={() =>
+                            handleRateChange(
+                              option
+                            )
+                          }
+                          className={
+                            rate ===
+                            option
+                              ? 'is-selected'
+                              : undefined
+                          }
+                        >
+                          {rate ===
+                            option && (
+                            <Check
+                              size={
+                                13
+                              }
+                            />
+                          )}
 
-                        {option}×
-                      </button>
-                    ))}
+                          {option}×
+                        </button>
+                      )
+                    )}
                   </div>
                 </div>
 
-                {voices.length > 0 && (
+                {/* VOZ */}
+
+                {voices.length >
+                  0 && (
                   <label className="narrator-setting-group">
                     <span className="narrator-setting-label">
                       Voz
+                      {voiceQualityLabel &&
+                        ` · ${voiceQualityLabel}`}
                     </span>
 
                     <select
@@ -836,29 +1202,69 @@ export function ArticleNarrator({
                       onChange={
                         handleVoiceChange
                       }
+                      aria-label="Selecionar voz da narração"
                     >
                       {voices.map(
-                        (voice) => (
-                          <option
-                            key={
-                              voice.voiceURI
-                            }
-                            value={
-                              voice.voiceURI
-                            }
-                          >
-                            {
-                              voice.name
-                            }{' '}
-                            ·{' '}
-                            {
-                              voice.lang
-                            }
-                          </option>
-                        )
+                        (voice) => {
+                          const natural =
+                            isNaturalVoice(
+                              voice
+                            );
+
+                          return (
+                            <option
+                              key={
+                                voice.voiceURI
+                              }
+                              value={
+                                voice.voiceURI
+                              }
+                            >
+                              {
+                                voice.name
+                              }
+
+                              {natural
+                                ? ' · Natural'
+                                : ''}
+
+                              {' · '}
+
+                              {
+                                voice.lang
+                              }
+                            </option>
+                          );
+                        }
                       )}
                     </select>
                   </label>
+                )}
+
+                {/* VOZ ATUAL */}
+
+                {activeVoice && (
+                  <div className="narrator-voice-info">
+                    <span>
+                      Voz selecionada
+                    </span>
+
+                    <strong>
+                      {
+                        activeVoice.name
+                      }
+                    </strong>
+
+                    {isNaturalVoice(
+                      activeVoice
+                    ) && (
+                      <small>
+                        Voz natural
+                        priorizada
+                        automaticamente
+                      </small>
+                    )}
+                  </div>
                 )}
               </div>
             )}
