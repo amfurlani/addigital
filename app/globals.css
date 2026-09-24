@@ -1024,8 +1024,10 @@ blockquote p {
 .article-podcast {
   margin: 12px 0 48px;
   padding: 28px;
+
   border: 1px solid rgba(200, 164, 93, 0.28);
   border-radius: 8px;
+
   background:
     linear-gradient(
       135deg,
@@ -1041,8 +1043,11 @@ blockquote p {
 
 .podcast-eyebrow {
   display: block;
+
   margin-bottom: 8px;
+
   color: var(--gold-light);
+
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -1050,29 +1055,52 @@ blockquote p {
 
 .article-podcast h2 {
   margin: 0 0 8px;
-  color: var(--warm-white);
-  font-size: clamp(1.3rem, 2vw, 1.7rem);
+
+  color: var(--text);
+
+  font-size: clamp(
+    1.3rem,
+    2vw,
+    1.7rem
+  );
 }
 
 .article-podcast p {
   margin: 0;
+
   color: var(--muted);
+
   line-height: 1.6;
 }
+
+
+/* ------------------------------------------------------------
+   LINKEDIN EMBED
+   ------------------------------------------------------------ */
 
 .linkedin-embed {
   width: 100%;
   max-width: 504px;
+
   margin: 0 auto;
+
+  overflow: visible;
 }
 
 .linkedin-embed iframe {
   display: block;
+
   width: 100%;
   max-width: 504px;
+
   border: 0;
   border-radius: 6px;
 }
+
+
+/* ------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------ */
 
 @media (max-width: 600px) {
   .article-podcast {
@@ -1080,8 +1108,16 @@ blockquote p {
     margin-bottom: 36px;
   }
 
+  /*
+   * Não definir height aqui.
+   *
+   * Cada publicação do LinkedIn pode exigir
+   * uma altura diferente. A altura vem do
+   * embedHeight definido no artigo.
+   */
   .linkedin-embed iframe {
-    height: 399px;
+    width: 100%;
+    max-width: 100%;
   }
 }
 
